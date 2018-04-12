@@ -3,5 +3,8 @@
 /data/patch
 /data/config.php
 /data/module.info
+/data/tpl
+/data/tpl/web
+/data/tpl/web/default
 /framework/builtin/core/module.cer
 
