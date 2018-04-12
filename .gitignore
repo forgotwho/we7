@@ -1,3 +1,7 @@
 /addons
 /attachment
 /data/patch
+/data/config.php
+/data/module.info
+/framework/builtin/core/module.cer
+
