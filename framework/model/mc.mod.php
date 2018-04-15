@@ -1526,7 +1526,7 @@ function mc_init_fans_info($openid, $force_init_member = false){
 			);
 
 			if (empty($fans_mapping['uid'])) {
-				$email = md5($openid).'@we7.cc';
+				$email = md5($fans['openid']).'@we7.cc';
 				$email_exists_member = pdo_getcolumn('mc_members', array('email' => $email), 'uid');
 				if (!empty($email_exists_member)) {
 					$uid = $email_exists_member;
