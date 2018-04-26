@@ -104,7 +104,6 @@ if ($do == 'openid') {
 		if (!empty($union_fans['uid'])) {
 			if (!empty($fans['uid'])) {
 				
-				pdo_delete('mc_members', array('uid' => $fans['uid']));
 			}
 			$fans_update['uid'] = $union_fans['uid'];
 			$_SESSION['uid'] = $union_fans['uid'];

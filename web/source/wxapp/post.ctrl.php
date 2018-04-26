@@ -153,11 +153,12 @@ if ($do == 'post') {
 		if ($isedit) {
 			$msg = '小程序修改成功';
 			pdo_update('wxapp_versions', $wxapp_version, array('id'=>$version_id, 'uniacid'=>$uniacid));
+			cache_delete(cache_system_key("wxapp_version:{$version_id}"));
 		} else {
 			$msg = '小程序创建成功';
 			pdo_insert('wxapp_versions', $wxapp_version);
 		}
-		iajax(0, $msg, url('wxapp/display/switch', array('uniacid' => $uniacid)));
+		iajax(0, $msg, url('account/display/switch', array('uniacid' => $uniacid, 'type' => ACCOUNT_TYPE_APP_NORMAL)));
 	}
 	if (!empty($uniacid)) {
 		$wxapp_info = wxapp_fetch($uniacid);

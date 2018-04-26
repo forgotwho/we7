@@ -320,13 +320,12 @@ function mc_oauth_account_userinfo($url = '') {
 	if (!empty($url)) {
 		$_SESSION['dest_url'] = urlencode($url);
 	}
-
-	$unisetting = uni_setting($_W['uniacid']);
 	$str = '';
 	if(uni_is_multi_acid()) {
 		$str = "&j={$_W['acid']}";
 	}
-	$url = (!empty($unisetting['oauth']['host']) ? ($unisetting['oauth']['host'] . '/') : $_W['siteroot']) . "app/index.php?i={$_W['uniacid']}{$str}&c=auth&a=oauth&scope=userinfo";
+	$oauth_url = uni_account_oauth_host();
+	$url = $oauth_url . "app/index.php?i={$_W['uniacid']}{$str}&c=auth&a=oauth&scope=userinfo";
 	$callback = urlencode($url);
 
 	$oauth_account = WeAccount::create($_W['account']['oauth']);

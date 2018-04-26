@@ -108,12 +108,13 @@
 			</span>
 			可升级应用
 		</div>
-		<div class="panel-body">
-			<a href="{{module.link}}" target="_blank" class="apply-item" ng-repeat="module in upgrade_module_list">
-				<img src="{{module.logo}}" class="apply-img"/>
-				<span class="text-over">{{module.title|limitTo:4}}</span>
-				<span class="color-red">升级</span>
-			</a>
+		<div class="panel-body welcome-apple-list">
+			<div class="apply-item" ng-repeat="module in upgrade_module_list">
+				<a href="{{module.link}}" target="_blank"><img src="{{module.logo}}" class="apply-img"/></a>
+				<a href="{{module.link}}" target="_blank"><span class="text-over">{{module.title|limitTo:4}}</span></a>
+				<a href="{{module.link}}" target="_blank" class="color-red">升级</a>
+				<a data-toggle="popover" class="ignore hidden color-default" data-placement="bottom" data-trigger="hover" data-content="忽略当前版本更新，重新升级到模块列表自行升级">忽略</a>
+			</div>
 			<div class="text-center" ng-if="upgrade_modules_show == 0">
 				没有可升级的应用
 			</div>

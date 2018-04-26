@@ -68,10 +68,10 @@
 							<div class="name text-over">
 								{{list.account.name}}
 							</div>
-							<div class="version text-over" ng-if="list.account.level == 1">类型：普通订阅号</div>
-							<div class="version text-over" ng-if="list.account.level == 2">类型：普通服务号</div>
-							<div class="version text-over" ng-if="list.account.level == 3">类型：认证订阅号</div>
-							<div class="version text-over" ng-if="list.account.level == 4">类型：认证服务号</div>
+							<div class="version text-over" ng-if="list.account.type ==1 || list.account.type==3">类型：公众号</div>
+							<div class="version text-over" ng-if="list.account.type == 4 || list.account.type == 7">类型：小程序</div>
+							<div class="version text-over" ng-if="list.account.type == 5">类型：PC</div>
+							<div class="version text-over" ng-if="list.account.type == 6">类型：APP</div>
 							<div class="version" ng-if="!list.account.level">&nbsp;</div>
 						</div>
 					</div>

@@ -7,11 +7,11 @@ defined('IN_IA') or exit('Access Denied');
 load()->model('article');
 load()->model('account');
 
-$dos = array('commont_list', 'add_comment', 'comment_status');
-$do = in_array($do, $dos) ? $do : 'commont_list';
+$dos = array('display', 'post', 'change_status');
+$do = in_array($do, $dos) ? $do : 'display';
 
 
-if ($do == 'commont_list') {
+if ($do == 'display') {
 	$articleId = intval($_GPC['id']);
 
 	$pindex = max(1, intval($_GPC['page']));
@@ -51,7 +51,7 @@ if ($do == 'commont_list') {
 	template('site/commont-list');
 }
 
-if ($do == 'add_comment') {
+if ($do == 'post') {
 	$comment = array(
 		'uniacid' => $_W['uniacid'],
 		'articleid' => intval($_GPC['articleid']),
@@ -69,7 +69,7 @@ if ($do == 'add_comment') {
 	iajax(0, $comment);
 }
 
-if ($do == 'comment_status') {
+if ($do == 'change_status') {
 	$setting = uni_setting($_W['uniacid']);
 	if (!empty($setting['comment_status'])) {
 		uni_setting_save('comment_status', COMMENT_STATUS_OFF);

@@ -6,7 +6,7 @@
 defined('IN_IA') or exit('Access Denied');
 load()->model('module');
 if (!empty($_W['uid'])) {
-	header('Location: '.url('account/display'));
+	header('Location: '.url('account/display', array('type' => ACCOUNT_TYPE_SIGN)));
 	exit;
 }
 

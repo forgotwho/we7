@@ -188,6 +188,7 @@ if ($do == 'list') {
 				':module' => 'article',
 				':sign' => $handsel['sign']
 			));
+
 			if (($total >= $credit['limit']) || (($total + $handsel['credit_value']) > $credit['limit'])) {
 				exit(json_encode(error(- 1, '赠送积分已达到上限')));
 			}
@@ -196,6 +197,13 @@ if ($do == 'list') {
 			if (is_error($status)) {
 				exit(json_encode($status));
 			} else {
+				if ($handsel['action'] == 'share') {
+					$send_msg = '分享文章,赠送积分';
+				}else if ($handsel['action'] == 'click') {
+					$send_msg = '分享的文章被阅读，赠送积分';
+				}
+				$openid = pdo_getcolumn('mc_mapping_fans', array('uniacid' => $_W['uniacid'], 'uid' => $_W['member']['uid']), 'openid');
+				mc_notice_credit1($openid, $touid, $credit['share'], $send_msg);
 				exit('success');
 			}
 		} else {

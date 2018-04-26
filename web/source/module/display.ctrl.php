@@ -34,8 +34,8 @@ if ($do == 'display') {
 	$module_table = table('module');
 	$module_rank = $module_table->moduleRank();
 	$rank = array();
-	foreach ($user_module as $key => $module_value) {
-		if (!empty($module_value['issystem'])) {
+	foreach ($user_module as $key => $module_info) {
+		if (!empty($module_info['issystem']) || ($module_info['welcome_support'] == MODULE_SUPPORT_SYSTEMWELCOME && $module_info['app_support'] != MODULE_SUPPORT_ACCOUNT && $module_info['wxapp_support'] != MODULE_SUPPORT_WXAPP && $module_info['webapp_support'] != MODULE_SUPPORT_WEBAPP && $module_info['phoneapp_support'] != MODULE_SUPPORT_PHONEAPP)) {
 			unset($user_module[$key]);
 		} else {
 			$rank[] = !empty($module_rank[$key]['rank']) ? $module_rank[$key]['rank'] : 0;
@@ -77,7 +77,7 @@ if ($do == 'switch') {
 		}
 	}
 	if (empty($uniacid) && empty($version_id)) {
-		itoast('该模块暂无可用的公众号或小程序，请先分配权限', url('module/display'), 'info');
+		itoast('该模块暂无可用的公众号或小程序，请先给公众号或小程序分配该应用的使用权限', url('module/display'), 'info');
 	}
 
 	module_save_switch($module_name, $uniacid, $version_id);
@@ -87,18 +87,18 @@ if ($do == 'switch') {
 	if (empty($uniacid) && !empty($version_id)) {
 		uni_account_save_switch($version_info['uniacid'], WXAPP_TYPE_SIGN);
 		wxapp_update_last_use_version($version_info['uniacid'], $version_id);
-		itoast('', url('wxapp/display/switch', array('module' => $module_name, 'version_id' => $version_id)), 'success');
+		itoast('', url('account/display/switch', array('uniacid' => $uniacid, 'module' => $module_name, 'version_id' => $version_id, 'type' => ACCOUNT_TYPE_APP_NORMAL)), 'success');
 	}
 	if (!empty($uniacid)) {
 		if (empty($version_id)) {
-			itoast('', url('account/display/switch', array('uniacid' => $uniacid, 'module_name' => $module_name)), 'success');
+			itoast('', url('account/display/switch', array('uniacid' => $uniacid, 'module_name' => $module_name, 'type' => ACCOUNT_TYPE_OFFCIAL_NORMAL)), 'success');
 		}
 		if ($version_info['uniacid'] != $uniacid) {
-			itoast('', url('account/display/switch', array('uniacid' => $uniacid, 'module_name' => $module_name, 'version_id' => $version_id)), 'success');
+			itoast('', url('account/display/switch', array('uniacid' => $uniacid, 'module_name' => $module_name, 'version_id' => $version_id, 'type' => ACCOUNT_TYPE_OFFCIAL_NORMAL)), 'success');
 		} else {
 			uni_account_save_switch($version_info['uniacid'], WXAPP_TYPE_SIGN);
 			wxapp_update_last_use_version($version_info['uniacid'], $version_id);
-			itoast('', url('wxapp/display/switch', array('module' => $module_name, 'version_id' => $version_id)), 'success');
+			itoast('', url('account/display/switch', array('uniacid' => $uniacid, 'module' => $module_name, 'version_id' => $version_id, 'type' => ACCOUNT_TYPE_APP_NORMAL)), 'success');
 		}
 	}
 }

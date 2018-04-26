@@ -73,12 +73,12 @@ if ($do == 'post') {
 	}
 	if (checksubmit()) {
 		$insert_user = array(
-				'username' => trim($_GPC['username']),
-				'remark' => trim($_GPC['remark']),
-				'password' => trim($_GPC['password']),
-				'repassword' => trim($_GPC['repassword']),
-				'type' => ACCOUNT_OPERATE_CLERK
-			);
+			'username' => trim($_GPC['username']),
+			'remark' => trim($_GPC['remark']),
+			'password' => trim($_GPC['password']),
+			'repassword' => trim($_GPC['repassword']),
+			'type' => ACCOUNT_OPERATE_CLERK
+		);
 		if (empty($insert_user['username'])) {
 			itoast('必须输入用户名，格式为 1-15 位字符，可以包括汉字、字母（不区分大小写）、数字、下划线和句点。');
 		}
@@ -119,9 +119,16 @@ if ($do == 'post') {
 		if (!empty($permission) && is_array($permission)) {
 			foreach ($module_and_plugins as $name) {
 				if (empty($permission[$name])) {
-					$module_permission = 'all';
+					$module_permission = '';
 				} else {
 					$module_permission = implode('|', array_unique($permission[$name]));
+				}
+				if (empty($module_permission) && !empty($have_permission[$name])) {
+					pdo_delete('users_permission', array('uniacid' => $_W['uniacid'], 'uid' => $uid, 'type' => $name));
+					continue;
+				}
+				if (empty($module_permission)) {
+					continue;
 				}
 				if (empty($have_permission[$name])) {
 					pdo_insert('users_permission', array('uniacid' => $_W['uniacid'], 'uid' => $uid, 'type' => $name, 'permission' => $module_permission));
@@ -130,12 +137,9 @@ if ($do == 'post') {
 				}
 			}
 		} else {
-			$permission = 'all';
 			foreach ($module_and_plugins as $name) {
-				if (empty($have_permission)) {
-					pdo_insert('users_permission', array('uniacid' => $_W['uniacid'], 'uid' => $uid, 'type' => $name, 'permission' => $permission));
-				} else {
-					pdo_update('users_permission', array('permission' => $permission), array('uniacid' => $_W['uniacid'], 'uid' => $uid, 'type' => $name));
+				if (!empty($have_permission[$name])) {
+					pdo_delete('users_permission', array('uniacid' => $_W['uniacid'], 'uid' => $uid, 'type' => $name));
 				}
 			}
 		}

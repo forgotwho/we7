@@ -326,7 +326,9 @@ function permission_check_account_user($permission_name, $show_message = true, $
 		if (defined('FRAME') && FRAME == 'system') {
 			$can_see_more = in_array($permission_name, $see_more_info[$_W['highest_role']]) ? true : false;
 		} else {
-			$can_see_more = in_array($permission_name, $see_more_info[$_W['role']]) ? true : false;
+			if (is_array($see_more_info[$_W['role']]) && !empty($see_more_info[$_W['role']])) {
+				$can_see_more = in_array($permission_name, $see_more_info[$_W['role']]) ? true : false;
+			}
 		}
 		return $can_see_more;
 	}

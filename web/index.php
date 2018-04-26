@@ -1,6 +1,6 @@
 <?php
 /**
- * [WeEngine System] Copyright (c) 20180410142712 WE7.CC
+ * [WeEngine System] Copyright (c) 20180426110824 WE7.CC
  * WeEngine is NOT a free software, it under the license terms, visited http://www.we7.cc/ for more details.
  */
 define('IN_SYS', true);
@@ -18,7 +18,7 @@ if (!empty($_GPC['state'])) {
 }
 
 if (empty($_W['isfounder']) && !empty($_W['user']) && ($_W['user']['status'] == USER_STATUS_CHECK || $_W['user']['status'] == USER_STATUS_BAN)) {
-	message('您的账号正在审核或是已经被系统禁止，请联系网站管理员解决！');
+	message('您的账号正在审核或是已经被系统禁止，请联系网站管理员解决！', url('user/login'), 'info');
 }
 $acl = require IA_ROOT . '/web/common/permission.inc.php';
 
@@ -97,10 +97,10 @@ if ($_W['role'] != ACCOUNT_MANAGE_NAME_FOUNDER) {
 	}
 	if (empty($_W['uniacid'])) {
 		if (defined('FRAME') && FRAME == 'account') {
-			itoast('', url('account/display'), 'info');
+			itoast('', url('account/display', array('type' => ACCOUNT_TYPE_SIGN)), 'info');
 		}
 		if (defined('FRAME') && FRAME == 'wxapp') {
-			itoast('', url('wxapp/display'), 'info');
+			itoast('', url('account/display', array('type' => WXAPP_TYPE_SIGN)), 'info');
 		}
 	}
 	$acl = permission_build();

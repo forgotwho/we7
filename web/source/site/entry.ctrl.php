@@ -40,7 +40,7 @@ if (!$entry['direct']) {
 	
 		if (empty($_W['uniacid'])) {
 			if (!empty($_GPC['version_id'])) {
-				itoast('', url('wxapp/display'));
+				itoast('', url('account/display', array('type' => WXAPP_TYPE_SIGN)));
 			} else {
 				itoast('', url('account/display'));
 			}

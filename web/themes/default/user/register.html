@@ -174,7 +174,7 @@
 							</div>
 						</div>
 						<div class="login-submit text-center">
-							<input type="submit" ng-click="register()" value="注册" class="btn btn-primary" ng-disabled="mobleInvalid || smscodeInvalid || imageInvalid || passwordInvalid || repasswordInvalid" />
+							<input type="submit" ng-click="register()" value="注册" class="btn btn-primary" />
 							<a href="{url 'user/login'}" class="btn btn-default">登录</a>
 						</div>
 					</div>
@@ -184,10 +184,11 @@
 		</div>
 	</div>
 </div>
+
 <script type="text/javascript">
 	angular.module('userManageApp').value('config', {
-		'owner_uid': "{php echo !empty($_GPC['owner_uid']) ? $_GPC['owner_uid'] : 0}",
-		'register_type': "{php echo !empty($_GPC['register_type']) ? $_GPC['register_type'] : 0}",
+		'owner_uid': "{php echo !empty($owner_uid) ? $owner_uid : 0}",
+		'register_type': "{php echo !empty($register_type) ? $register_type : 0}",
 		'register_sign': "{php echo !empty($register_sign) ? $register_sign : 'null'}",
 		'image': "{php echo url('utility/code')}",
 		'links': {
@@ -204,4 +205,5 @@
 
 	angular.bootstrap($('.register-mobile'), ['userManageApp']);
 </script>
+
 {template 'common/footer-base'}

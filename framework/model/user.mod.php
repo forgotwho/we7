@@ -536,7 +536,7 @@ function user_login_forward($forward = '') {
 			return $login_location['module'];
 		} else {
 			if ($last_visit_url['c'] == 'wxapp') {
-				return $last_visit_url['a'] == 'display' ? url('wxapp/display') : $login_location['wxapp'];
+				return $last_visit_url['a'] == 'display' ? url('account/display', array('type' => WXAPP_TYPE_SIGN)) : $login_location['wxapp'];
 			}
 			$account_info = uni_fetch($last_visit_uniacid);
 			if (empty($account_info) || $last_visit_url['c'] == 'account' && $last_visit_url['a'] == 'display') {
@@ -962,16 +962,16 @@ function user_after_login_link() {
 			$url = url('home/welcome/system_home');
 			break;
 		case ACCOUNT_DISPLAY_TYPE:
-			$url = url('account/display');
+			$url = url('account/display', array('type' => ACCOUNT_TYPE_SIGN));
 			break;
 		case WXAPP_DISPLAY_TYPE:
-			$url = url('wxapp/display');
+			$url = url('account/display', array('type' => WXAPP_TYPE_SIGN));
 			break;
 		case WEBAPP_DISPLAY_TYPE:
-			$url = url('webapp/home');
+			$url = url('account/display', array('type' => WEBAPP_TYPE_SIGN));
 			break;
 		case PHONEAPP_DISPLAY_TYPE:
-			$url = url('phoneapp/display');
+			$url = url('account/display', array('type' => PHONEAPP_TYPE_SIGN));
 			break;
 		default:
 			$url = '';

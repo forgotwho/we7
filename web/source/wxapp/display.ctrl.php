@@ -5,25 +5,13 @@
  */
 defined('IN_IA') or exit('Access Denied');
 load()->model('wxapp');
-load()->model('account');
 
-$_W['page']['title'] = '小程序列表';
+$dos = array('home');
+$do = in_array($do, $dos) ? $do : 'home';
 
-$dos = array('display', 'switch', 'rank', 'home');
-$do = in_array($do, $dos) ? $do : 'display';
-
-if ($do == 'rank' || $do == 'switch') {
-	$uniacid = intval($_GPC['uniacid']);
-	if (!empty($uniacid)) {
-		$wxapp_info = wxapp_fetch($uniacid);
-		if (empty($wxapp_info)) {
-			itoast('小程序不存在', referer(), 'error');
-		}
-	}
-}
 if ($do == 'home') {
 	$last_uniacid = uni_account_last_switch();
-	$url = url('wxapp/display');
+	$url = url('account/display', array('type' => WXAPP_TYPE_SIGN));
 	if (empty($last_uniacid)) {
 		itoast('', $url, 'info');
 	}
@@ -39,68 +27,4 @@ if ($do == 'home') {
 		$url = url('wxapp/version/home', array('version_id' => $last_version['version']['id']));
 	}
 	itoast('', $url, 'info');
-} elseif ($do == 'display') {
-		$account_info = permission_user_account_num();
-
-	$pindex = max(1, intval($_GPC['page']));
-	$psize = 20;
-
-	$account_table = table('wxapp');
-	$account_table->searchWithType(array(ACCOUNT_TYPE_APP_NORMAL, ACCOUNT_TYPE_APP_AUTH));
-
-	$keyword = trim($_GPC['keyword']);
-	if (!empty($keyword)) {
-		$account_table->searchWithKeyword($keyword);
-	}
-
-	$account_table->accountRankOrder();
-	$account_table->searchWithPage($pindex, $psize);
-	$wxapp_lists = $account_table->searchAccountList();
-	$total = $account_table->getLastQueryTotal();
-
-	if (!empty($wxapp_lists)) {
-		foreach ($wxapp_lists as &$account) {
-			$account = uni_fetch($account['uniacid']);
-			$account['versions'] = wxapp_get_some_lastversions($account['uniacid']);
-			if (!empty($account['versions'])) {
-				foreach ($account['versions'] as $version) {
-					if (!empty($version['current'])) {
-						$account['current_version'] = $version;
-					}
-				}
-			}
-		}
-	}
-	$pager = pagination($total, $pindex, $psize);
-	template('wxapp/account-display');
-} elseif ($do == 'switch') {
-	$module_name = trim($_GPC['module']);
-	$version_id = !empty($_GPC['version_id']) ? intval($_GPC['version_id']) : $wxapp_info['version']['id'];
-	if (!empty($module_name) && !empty($version_id)) {
-		$version_info = wxapp_version($version_id);
-		$module_info = array();
-		if (!empty($version_info['modules'])) {
-			foreach ($version_info['modules'] as $key => $module_val) {
-				if ($module_val['name'] == $module_name) {
-					$module_info = $module_val;
-				}
-			}
-		}
-		if (empty($version_id) || empty($module_info)) {
-			itoast('版本信息错误');
-		}
-		$url = url('home/welcome/ext/', array('m' => $module_name));
-		if (!empty($module_info['account']['uniacid'])) {
-			uni_account_switch($module_info['account']['uniacid'], $url);
-		} else {
-			$url .= '&version_id=' . $version_id;
-			uni_account_switch($version_info['uniacid'], $url, WXAPP_TYPE_SIGN);
-		}
-	}
-	wxapp_update_last_use_version($uniacid, $version_id);
-	uni_account_switch($uniacid, url('wxapp/version/home', array('version_id' => $version_id)), WXAPP_TYPE_SIGN);
-	exit;
-} elseif ($do == 'rank') {
-	uni_account_rank_top($uniacid);
-	itoast('更新成功', '', '');
 }

@@ -599,7 +599,7 @@ function wxapp_code_current_appjson($version_id) {
 		$appjson = $cloud_appjson['data']['appjson'];
 		pdo_update('wxapp_versions', array('default_appjson' => serialize($appjson)),
 			array('id' => $version_id));
-
+		cache_delete(cache_system_key("wxapp_version:{$version_id}"));
 		return $appjson;
 	}
 }
@@ -656,10 +656,14 @@ function wxapp_code_path_convert($attachment_id) {
 
 
 function wxapp_code_save_appjson($version_id, $json) {
-	return pdo_update('wxapp_versions', array('appjson' => serialize($json), 'use_default' => 0), array('id' => $version_id));
+	$result = pdo_update('wxapp_versions', array('appjson' => serialize($json), 'use_default' => 0), array('id' => $version_id));
+	cache_delete(cache_system_key("wxapp_version:{$version_id}"));
+	return $result;
 }
 
 
 function wxapp_code_set_default_appjson($version_id) {
-	return pdo_update('wxapp_versions', array('appjson' => '', 'use_default' => 1), array('id' => $version_id));
+	$result = pdo_update('wxapp_versions', array('appjson' => '', 'use_default' => 1), array('id' => $version_id));
+	cache_delete(cache_system_key("wxapp_version:{$version_id}"));
+	return $result;
 }

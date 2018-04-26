@@ -18,6 +18,7 @@ if (empty($_W['setting']['register']['open'])) {
 }
 
 $register_type = safe_gpc_belong(safe_gpc_string($_GPC['register_type']), array('system', 'mobile'), 'system');
+$owner_uid = intval($_GPC['owner_uid']);
 
 if ($register_type == 'system') {
 	$extendfields = OAuth2Client::create($register_type)->systemFields();

@@ -850,8 +850,11 @@ abstract class WeBase {
 			if(!is_file($source)) {
 				$source = IA_ROOT . "/app/themes/default/{$name}/{$filename}.html";
 			}
-			if(!is_file($source)) {
+			if (!is_file($source)) {
 				$source = $defineDir . "/template/mobile/{$filename}.html";
+			}
+			if (!is_file($source)) {
+				$source = $defineDir . "/template/wxapp/{$filename}.html";
 			}
 			if(!is_file($source)) {
 				$source = $defineDir . "/template/webapp/{$filename}.html";

@@ -86,7 +86,7 @@
 			<label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">权限设置</label>
 			<div class="col-sm-10 col-lg-10 col-xs-12">
 				{loop $all_permission $key $module_val}
-					<div class="col-sm-10 col-lg-10 col-xs-12 plugin-name">{$module_val['info']['title']}<span class="color-gray">（不设置代表拥有所有权限）</span></div>
+					<div class="col-sm-10 col-lg-10 col-xs-12 plugin-name">{$module_val['info']['title']}</div>
 					{loop $module_val['permission'] $sub_key $permission}
 					<div class="col-sm-4">
 						<div class="checkbox">
@@ -106,5 +106,18 @@
 		</div>
 	</form>
 </div>
+<script>
+var haveChecked = false;
+$('input[type="checkbox"]').each(function(i, n) {
+	if ($(n).prop('checked')) {
+		haveChecked = true;
+	}
+});
+if (!haveChecked) {
+	$('input[type="checkbox"]').each(function(i, n) {
+		$(n).prop('checked', 'checked')
+	});	
+}
+</script>
 {/if}
 {template 'common/footer'}

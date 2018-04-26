@@ -9,7 +9,7 @@ defined('IN_IA') or exit('Access Denied');
 
 class JobTable extends We7Table {
 
-	protected $tableName = 'job';
+	protected $tableName = 'core_job';
 	protected $field = array('type', 'payload', 'status', 'handled', 'uniacid', 'title', 'total', 'createtime', 'endtime', 'updatetime', 'isdeleted', 'uid');
 
 	protected $default = array('status'=>0, 'handled'=>0, 'total'=>0, 'createtime'=>'custom', 'updatetime'=>'custom', 'isdeleted'=>0, 'uid'=>0);

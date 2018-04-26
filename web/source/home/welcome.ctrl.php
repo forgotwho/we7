@@ -118,6 +118,7 @@ if ($do == 'platform') {
 	define('FRAME', 'account');
 	define('IN_MODULE', $modulename);
 	if ($_GPC['system_welcome'] && $_W['isfounder']) {
+		define('SYSTEM_WELCOME_MODULE', true);
 		$frames = buildframes('system_welcome');
 	} else {
 		$site = WeUtility::createModule($modulename);
@@ -206,9 +207,13 @@ if ($do == 'system_home') {
 	$last_accounts_modules = pdo_getall('system_stat_visit', array('uid' => $_W['uid']), array(), '', array('displayorder desc', 'updatetime desc'), 20);
 
 	if (!empty($last_accounts_modules)) {
-		foreach ($last_accounts_modules as &$info) {
+		foreach ($last_accounts_modules as $key => &$info) {
 			if (!empty($info['uniacid'])) {
 				$info['account'] = uni_fetch($info['uniacid']);
+			}
+			if ($info['account']['isdeleted'] || empty($info['account'])) {
+				unset($last_accounts_modules[$key]);
+				continue;
 			}
 			if (!empty($info['modulename'])) {
 				$info['account'] = module_fetch($info['modulename']);

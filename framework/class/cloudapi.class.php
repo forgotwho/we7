@@ -208,11 +208,10 @@ class CloudApi {
 			}
 			if (is_error($json_result)) {
 				if ($json_result['errno'] == 10000) {
+					$this->deleteCer();
 					$this->deleteModuleCer();
 				};
-				if($json_result['errno'] == 1) {
-					$this->deleteCer();
-				}
+
 				return $json_result;
 			}
 			return $json_result;
@@ -231,8 +230,7 @@ class CloudApi {
 		$response = ihttp_get($url);
 
 		if (is_error($response)) {
-			$this->deleteCer();
-			return $response;
+						return $response;
 		}
 
 		if($with_cookie) {
@@ -250,7 +248,6 @@ class CloudApi {
 
 			$response = ihttp_request($url, array(), $ihttp_options);
 			if (is_error($response)) {
-				$this->deleteCer();
 				return $response;
 			}
 		}
@@ -269,7 +266,6 @@ class CloudApi {
 		if($with_cookie) {
 			$response = ihttp_get($url);
 			if (is_error($response)) {
-				$this->deleteCer();
 				return $response;
 			}
 			$ihttp_options = array();
@@ -286,7 +282,6 @@ class CloudApi {
 		}
 		$response = ihttp_request($url, $post_params, $ihttp_options);
 		if (is_error($response)) {
-			$this->deleteCer();
 			return $response;
 		}
 		if ($dataType == 'binary') {

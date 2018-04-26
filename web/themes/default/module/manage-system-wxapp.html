@@ -320,6 +320,9 @@
 		</div>
 		<img ng-src="{{ moduleinfo.logo }}" class="user-avatar img-rounded pull-left" ng-if="moduleinfo.main_module == ''">
 		<h3 class="pull-left">{{ moduleinfo.title }}</h3>
+		{if permission_check_account_user('see_module_manage_system_shopinfo')}
+		<a ng-if="isFounder == 1 && moduleinfo.cloud_mid != ''" ng-href="{{ 'http://s.we7.cc/module-' + moduleinfo.cloud_mid + '.html' }}" target="_blank" class="btn btn-primary pull-right">查看商城详情</a>
+		{/if}
 	</div>
 
 	<div class="btn-group we7-btn-group we7-margin-bottom">

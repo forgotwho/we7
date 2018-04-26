@@ -285,7 +285,11 @@ function buildframes($framename = ''){
 			$modulename = $entry['module'];
 		}
 		$module = module_fetch($modulename);
-		$entries = module_entries($modulename);
+		if (defined('SYSTEM_WELCOME_MODULE')) {
+			$entries = module_entries($modulename, array('system_welcome'));
+		} else {
+			$entries = module_entries($modulename);
+		}
 		if($status) {
 			$permission = pdo_get('users_permission', array('uniacid' => $_W['uniacid'], 'uid' => $_W['uid'], 'type' => $modulename), array('permission'));
 			if(!empty($permission)) {
@@ -350,14 +354,14 @@ function buildframes($framename = ''){
 				'is_display' => 1,
 			);
 		}
-		if ($module['permissions'] && ($_W['isfounder'] || $_W['role'] == ACCOUNT_MANAGE_NAME_OWNER)) {
+		if ($module['permissions'] && ($_W['isfounder'] || $_W['role'] == ACCOUNT_MANAGE_NAME_OWNER) && !defined('SYSTEM_WELCOME_MODULE')) {
 			$frames['account']['section']['platform_module_common']['menu']['platform_module_permissions'] = array(
 				'title' => "<i class='fa fa-cog'></i> 权限设置",
 				'url' => url('module/permission', array('m' => $modulename, 'version_id' => $version_id)),
 				'is_display' => 1,
 			);
 		}
-		if ($_W['isfounder'] || $_W['role'] == ACCOUNT_MANAGE_NAME_OWNER) {
+		if (($_W['isfounder'] || $_W['role'] == ACCOUNT_MANAGE_NAME_OWNER) && !defined('SYSTEM_WELCOME_MODULE')) {
 			$frames['account']['section']['platform_module_common']['menu']['platform_module_default_entry'] = array(
 					'title' => "<i class='fa fa-cog'></i> 默认入口",
 					'url' => url('module/default-entry', array('m' => $modulename, 'version_id' => $version_id)),
@@ -434,7 +438,7 @@ function buildframes($framename = ''){
 		
 	}
 
-		if (FRAME == 'wxapp') {
+		if (defined('FRAME') && FRAME == 'wxapp') {
 		load()->model('wxapp');
 		$version_id = intval($_GPC['version_id']);
 		$wxapp_version = wxapp_version($version_id);
@@ -447,7 +451,7 @@ function buildframes($framename = ''){
 				}
 				$frames['wxapp']['section']['wxapp_module']['menu']['module_menu'.$module['mid']] = array(
 					'title' => "<img src='{$module['logo']}'> {$module['title']}",
-					'url' => url('wxapp/display/switch', array('module' => $module['name'], 'version_id' => $version_id)),
+					'url' => url('account/display/switch', array('module' => $module['name'], 'version_id' => $version_id, 'uniacid' => $_W['uniacid'])),
 					'is_display' => 1,
 				);
 			}
@@ -476,7 +480,7 @@ function buildframes($framename = ''){
 		}
 	}
 
-	if (FRAME == 'phoneapp') {
+	if (defined('FRAME') && FRAME == 'phoneapp') {
 		load()->model('phoneapp');
 		$version_id = intval($_GPC['version_id']);
 		$phoneapp_version = phoneapp_version($version_id);
@@ -536,10 +540,7 @@ function buildframes($framename = ''){
 			'icon' => $menu['icon'],
 		);
 	}
-	
-		return !empty($framename) ? $frames[$framename] : $frames;
-	
-	
+	return !empty($framename) ? ($framename == 'system_welcome' ? $frames['account'] : $frames[$framename]) : $frames;
 }
 
 function system_modules() {

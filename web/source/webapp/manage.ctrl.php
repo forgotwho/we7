@@ -17,7 +17,7 @@ if($do == 'create') {
 		return;
 	}
 	if (!webapp_can_create($_W['uid'])) {
-		itoast('创建PC个数已满', url('webapp/manage/list'));
+		itoast('创建PC个数已满', url('account/display', array('type' => WEBAPP_TYPE_SIGN)));
 	}
 	$data = array(
 		'name' => safe_gpc_string($_GPC['name']),
@@ -27,43 +27,13 @@ if($do == 'create') {
 	$webapp = table('webapp');
 	$uniacid = $webapp->createWebappInfo($data, $_W['uid']);
 	if($uniacid){
-		itoast('创建成功', url('webapp/manage/list'));
+		itoast('创建成功', url('account/display', array('type' => WEBAPP_TYPE_SIGN)));
 	}
 }
 
 if($do == 'create_display') {
 	if(!webapp_can_create($_W['uid'])) {
-		itoast('', url('webapp/manage/list'));
+		itoast('', url('account/display', array('type' => WEBAPP_TYPE_SIGN)));
 	}
 	template('webapp/create');
-}
-
-if($do == 'list') {
-
-	$pindex = max(1, intval($_GPC['page']));
-	$psize = 15;
-
-	$account_table = table('webapp');
-	$account_table->searchWithType(array(ACCOUNT_TYPE_WEBAPP_NORMAL));
-
-	$keyword = trim($_GPC['keyword']);
-	if (!empty($keyword)) {
-		$account_table->searchWithKeyword($keyword);
-	}
-
-	$account_table->accountRankOrder();
-	$account_table->searchWithPage($pindex, $psize);
-	$list = $account_table->searchAccountList();
-	$total = $account_table->getLastQueryTotal();
-
-	$pager = pagination($total, $pindex, $psize);
-
-	if (!empty($list)) {
-		foreach ($list as &$account) {
-			$account = uni_fetch($account['uniacid']);
-			$account['switchurl'] = url('webapp/home/switch', array('uniacid' => $account['uniacid']));
-		}
-	}
-
-	template('webapp/list');
 }

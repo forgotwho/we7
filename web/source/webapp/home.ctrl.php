@@ -11,19 +11,10 @@ load()->model('account');
 
 $do = safe_gpc_belong($do, array('switch', 'display'), 'display');
 
-if($do == 'switch') {
-	$uniacid = intval($_GPC['uniacid']);
-	if (empty($uniacid)) {
-		itoast('', url('webapp/manage/list'), 'info');
-	}
-	uni_account_save_switch($uniacid, WEBAPP_TYPE_SIGN);
-	itoast('', url('webapp/home/display'));
-}
-
 if($do == 'display') {
 	$last_uniacid = uni_account_last_switch();
 	if (empty($last_uniacid)) {
-		itoast('', url('webapp/manage/list'), 'info');
+		itoast('', url('account/display', array('type' => WEBAPP_TYPE_SIGN)), 'info');
 	}
 	if (!empty($last_uniacid) && $last_uniacid != $_W['uniacid']) {
 		uni_account_switch($last_uniacid, url('webapp/home'), WEBAPP_TYPE_SIGN);

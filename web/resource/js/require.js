@@ -81,6 +81,8 @@ var requireConfig = {
 		/*单选多选组件 待完善*/
 		'we7.check' : '../lib/we7.check',
 		'loadjs': '../lib/loadjs', //加载CSS
+		'jszip' : '//cdn.bootcss.com/jszip/3.1.5/jszip',
+		'fileSaver' : '//cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver'
 
 	},
 	shim:{

@@ -53,7 +53,7 @@ if ($do == 'homemenu_post') {
 	if (empty($post['name'])) {
 		iajax(-1, '抱歉，请输入导航菜单的名称！', '');
 	}
-	$url = ((strexists($post['url'], 'http://') || strexists($post['url'], 'https://')) && !strexists($post['url'], '#wechat_redirect')) ? $post['url'] . '#wechat_redirect' : $post['url'];
+	$url = safe_gpc_url($post['url'], false);
 	if (is_array($post['section']) && !empty($post['section'])) {
 		if (intval($post['section']['num']) > 10) {
 			$section_num = 10;

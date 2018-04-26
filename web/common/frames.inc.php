@@ -230,7 +230,18 @@ $we7_system_menu['phoneapp'] = array(
 			'menu' => array(),
 			'is_display' => true,
 		),
-		
+		'phoneapp_profile' => array(
+			'title' => '配置',
+			'menu' => array(
+				'front_download' => array(
+					'title' => '下载APP',
+					'url' => url('phoneapp/front-download'),
+					'is_display' => 1,
+					'icon' => 'wi wi-examine',
+					'permission_name' => 'phoneapp_front_download',
+				)
+			)
+		)
 	),
 );
 
@@ -676,34 +687,9 @@ $we7_system_menu['site'] = array(
 			)
 		)
 	),
-	'founder' => true,
 );
 
-$we7_system_menu['advertisement'] = array (
-	'title' => '广告联盟',
-	'icon' => 'wi wi-advert',
-	'url' => url('advertisement/content-provider'),
-	'section' => array(
-		'advertisement' => array(
-			'title' => '常用系统工具',
-			'menu' => array(
-				'advertisement-content-provider' => array(
-					'title' => '流量主',
-					'url' => url('advertisement/content-provider/account_list'),
-					'icon' => 'wi wi-flow',
-					'permission_name' => 'advertisement_content-use',
-				),
-				'advertisement-content-create' => array(
-					'title' => '广告主',
-					'url' => url('advertisement/content-provider/content_provider'),
-					'icon' => 'wi wi-adgroup',
-					'permission_name' => 'advertisement_content-create',
-				),
-			)
-		),
-	),
-	'founder' => true,
-);
+
 
 $we7_system_menu['appmarket'] = array(
 	'title' => '市场',
@@ -719,7 +705,8 @@ $we7_system_menu['help'] = array(
 	'icon' => 'wi wi-market',
 	'url' => url('help/display'),
 	'section' => array(),
-	'blank' => false
+	'blank' => false,
+	'founder' => true,
 );
 
 $we7_system_menu['custom_help'] = array(
@@ -728,7 +715,8 @@ $we7_system_menu['custom_help'] = array(
 	'url' => url('help/display/custom'),
 	'section' => array(),
 	'blank' => false,
-	'is_display' => 0
+	'is_display' => 0,
+	'founder' => true,
 );
 
 

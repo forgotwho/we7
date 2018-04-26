@@ -22,8 +22,8 @@ if(!empty($eid)) {
 		'direct' => 0,
 	);
 }
-$moduels = uni_modules();
-if (empty($moduels[$entry['module']])) {
+$modules = uni_modules();
+if (empty($modules[$entry['module']])) {
 	message('您访问的功能模块不存在，请重新进入');
 }
 if(empty($entry) || empty($entry['do'])) {
@@ -36,5 +36,5 @@ $_GPC['state'] = $entry['state'];
 $_GPC['m'] = $entry['module'];
 $_GPC['do'] = $entry['do'];
 
-$_W['current_module'] = $moduels[$entry['module']];
+$_W['current_module'] = $modules[$entry['module']];
 define('IN_MODULE', $entry['module']);

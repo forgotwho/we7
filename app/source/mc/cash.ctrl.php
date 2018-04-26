@@ -180,16 +180,9 @@ if(!empty($type)) {
 		$ps['title'] = urlencode($params['title']);
 		$sl = base64_encode(json_encode($ps));
 		$auth = sha1($sl . $_W['uniacid'] . $_W['config']['setting']['authkey']);
-		$oauth = uni_setting_load('oauth', $_W['uniacid']);
-		if (!empty($oauth['host'])) {
-			$callback = $oauth['host'] . "/payment/wechat/pay.php?i={$_W['uniacid']}&auth={$auth}&ps={$sl}";
-		} else {
-			$callback = $_W['siteroot'] . "payment/wechat/pay.php?i={$_W['uniacid']}&auth={$auth}&ps={$sl}";
-		}
-		$global_unisetting = uni_account_global_oauth();
-		$unisetting['oauth']['host'] = !empty($unisetting['oauth']['host']) ? $unisetting['oauth']['host'] : (!empty($global_unisetting['oauth']['host']) ? $global_unisetting['oauth']['host'] : '');
-		if (!empty($unisetting['oauth']['host'])) {
-			$callback = str_replace($_W['siteroot'], $unisetting['oauth']['host'].'/', $callback);
+		$oauth_url = uni_account_oauth_host();
+		if (!empty($oauth_url)) {
+			$callback = $oauth_url . "payment/wechat/pay.php?i={$_W['uniacid']}&auth={$auth}&ps={$sl}";
 		}
 				$proxy_pay_account = payment_proxy_pay_account();
 		if (!is_error($proxy_pay_account)) {
@@ -197,7 +190,6 @@ if(!empty($type)) {
 			header('Location: ' . $forward);
 			exit;
 		}
-
 		header("Location: $callback");
 		exit();
 	}

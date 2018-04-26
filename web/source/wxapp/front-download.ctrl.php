@@ -29,6 +29,7 @@ if (!empty($version_id)) {
 
 if ($do == 'custom') {
 	$default_appjson = wxapp_code_current_appjson($version_id);
+
 	$default_appjson = json_encode($default_appjson);
 	template('wxapp/version-front-download');
 }

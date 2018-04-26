@@ -71,6 +71,8 @@ function store_goods_post($data) {
 	}
 	if (!empty($data['unit'])) {
 		$post['unit'] = $data['unit'];
+	} else {
+		$post['unit'] = 'month';
 	}
 	$post['account_num'] = $data['account_num'];
 	$post['wxapp_num'] = $data['wxapp_num'];
@@ -81,7 +83,6 @@ function store_goods_post($data) {
 		$post['type'] = $data['type'];
 		$post['createtime'] = TIMESTAMP;
 		$post['title_initial'] = get_first_pinyin($data['title']);
-		$post['unit'] = 'month';
 		if ($data['type'] == STORE_TYPE_API) {
 			$post['unit'] = 'ten_thousand';
 		}

@@ -8,6 +8,7 @@ defined('IN_IA') or exit('Access Denied');
 load()->func('file');
 load()->model('user');
 load()->model('message');
+load()->model('wxapp');
 $dos = array('display', 'delete');
 $do = in_array($_GPC['do'], $dos)? $do : 'display';
 
@@ -64,8 +65,15 @@ if ($do == 'display') {
 		$account = uni_fetch($account['uniacid']);
 		$account['end'] = $account['endtime'] == 0 ? '永久' : date('Y-m-d', $account['starttime']) . '~'. date('Y-m-d', $account['endtime']);
 		$account['role'] = permission_account_user_role($_W['uid'], $account['uniacid']);
+		$account['versions'] = wxapp_get_some_lastversions($account['uniacid']);
+		if (!empty($account['versions'])) {
+			foreach ($account['versions'] as $version) {
+				if (!empty($version['current'])) {
+					$account['current_version'] = $version;
+				}
+			}
+		}
 	}
-
 	$total = $account_table->getLastQueryTotal();
 	$pager = pagination($total, $pindex, $psize);
 	template('account/manage-display' . ACCOUNT_TYPE_TEMPLATE);

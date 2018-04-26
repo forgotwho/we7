@@ -17,7 +17,7 @@ class WxappAccount extends WeAccount {
 	}
 
 	public function accountDisplayUrl() {
-		return url('wxapp/display');
+		return url('account/display', array('type' => WXAPP_TYPE_SIGN));
 	}
 
 	public function fetchAccountInfo() {

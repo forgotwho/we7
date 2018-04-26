@@ -152,6 +152,7 @@ $we7_file_permission = array(
 			'manage-system',
 			'permission',
 			'display',
+			'default-entry',
 		),
 		'manager' => array(
 			'manage-account',
@@ -423,7 +424,6 @@ $we7_file_permission = array(
 		'vice_founder' => array(
 			'see_account_manage_users_adduser',
 			'see_module_manage_system_group_add',
-			'see_user_profile_account_num',
 			'see_user_add_welcome_account'
 		),
 		'owner' => array(

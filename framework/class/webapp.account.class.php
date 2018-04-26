@@ -28,6 +28,6 @@ class WebappAccount extends WeAccount {
 	}
 
 	public function accountDisplayUrl() {
-		return url('webapp/display');
+		return url('account/display', array('type' => WEBAPP_TYPE_SIGN));
 	}
 }

@@ -48,6 +48,26 @@ class AccountTable extends We7Table {
 		return $list;
 	}
 
+	public function searchAccountListFields($fields = 'a.uniacid',$expire = false) {
+		global $_W;
+		$this->query->from('uni_account', 'a')->select($fields)->leftjoin('account', 'b')
+			->on(array('a.uniacid' => 'b.uniacid', 'a.default_acid' => 'b.acid'))
+			->where('b.isdeleted !=', '1');
+
+				if (!user_is_founder($_W['uid']) || user_is_vice_founder()) {
+			$this->query->leftjoin('uni_account_users', 'c')->on(array('a.uniacid' => 'c.uniacid'))
+				->where('a.default_acid !=', '0')->where('c.uid', $_W['uid']);
+		} else {
+			$this->query->where('a.default_acid !=', '0');
+		}
+		if (!empty($expire)) {
+			$this->searchWithExprie();
+		}
+		$this->accountUniacidOrder();
+		$list = $this->query->getall('uniacid');
+		return $list;
+	}
+
 	
 	public function userOwnedAccount($uid = 0) {
 		global $_W;

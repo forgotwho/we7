@@ -1080,14 +1080,17 @@ class WeiXinAccount extends WeAccount {
 
 	
 	public function uploadMedia($path, $type = 'image') {
-		if(empty($path)) {
+		if (empty($path)) {
 			return error(-1, '参数错误');
 		}
 		if (in_array(substr(ltrim($path, '/'), 0, 6), array('images', 'videos', 'audios', 'thumb'))) {
 			$path = ATTACHMENT_ROOT . ltrim($path, '/');
 		}
+		if (!file_exists($path)) {
+			return error(1, '文件不存在');
+		}
 		$token = $this->getAccessToken();
-		if(is_error($token)){
+		if (is_error($token)){
 			return $token;
 		}
 		$url = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token={$token}&type={$type}";
@@ -1099,14 +1102,17 @@ class WeiXinAccount extends WeAccount {
 
 	
 	public function uploadMediaFixed($path, $type = 'images') {
-		if(empty($path)) {
+		if (empty($path)) {
 			return error(-1, '参数错误');
 		}
 		if (in_array(substr(ltrim($path, '/'), 0, 6), array('images', 'videos', 'audios', 'thumb'))) {
 			$path = ATTACHMENT_ROOT . ltrim($path, '/');
 		}
+		if (!file_exists($path)) {
+			return error(1, '文件不存在');
+		}
 		$token = $this->getAccessToken();
-		if(is_error($token)){
+		if (is_error($token)){
 			return $token;
 		}
 		$url = "https://api.weixin.qq.com/cgi-bin/material/add_material?access_token={$token}&type={$type}";
@@ -1142,6 +1148,9 @@ class WeiXinAccount extends WeAccount {
 		if(is_error($token)){
 			return $token;
 		}
+		if (!file_exists($thumb)) {
+			return error(1, '文件不存在');
+		}
 		$data = array(
 			'media' => '@'. $thumb,
 		);
@@ -1155,14 +1164,17 @@ class WeiXinAccount extends WeAccount {
 	}
 
 	public function uploadVideoFixed($title, $description, $path) {
-		if(empty($path) || empty($title) || empty($description)) {
+		if (empty($path) || empty($title) || empty($description)) {
 			return error(-1, '参数错误');
 		}
 		if (in_array(substr(ltrim($path, '/'), 0, 6), array('images', 'videos', 'audios'))) {
 			$path = ATTACHMENT_ROOT . ltrim($path, '/');
 		}
+		if (!file_exists($path)) {
+			return error(1, '文件不存在');
+		}
 		$token = $this->getAccessToken();
-		if(is_error($token)){
+		if (is_error($token)){
 			return $token;
 		}
 		$url = "https://api.weixin.qq.com/cgi-bin/material/add_material?access_token={$token}&type=videos";
@@ -1413,11 +1425,8 @@ class WeiXinAccount extends WeAccount {
 			$code = $_GPC['code'];
 		}
 		if (empty($code)) {
-			$sitepath = substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/'));
-			$unisetting = uni_setting_load();
-			$global_unisetting = uni_account_global_oauth();
-			$unisetting['oauth']['host'] = !empty($unisetting['oauth']['host']) ? $unisetting['oauth']['host'] : (!empty($global_unisetting['oauth']['host']) ? $global_unisetting['oauth']['host'] : '');
-			$url = (!empty($unisetting['oauth']['host']) ? ($unisetting['oauth']['host'] . $sitepath . '/') : $_W['siteroot'] . 'app/') . "index.php?{$_SERVER['QUERY_STRING']}";
+			$oauth_url = uni_account_oauth_host();
+			$url = $oauth_url . "app/index.php?{$_SERVER['QUERY_STRING']}";
 			$forward = $this->getOauthCodeUrl(urlencode($url));
 			header('Location: ' . $forward);
 			exit;

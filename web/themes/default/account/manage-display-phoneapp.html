@@ -96,7 +96,7 @@
 		<td><p ng-bind="list.sms"></p></td>
 		<td class="vertical-middle table-manage-td">
 			<div class="link-group">
-				<a ng-href="{{links.switch}}uniacid={{list.uniacid}}">进入APP</a>
+				<a ng-href="{{links.switch}}uniacid={{list.uniacid}}&type={{list.type}}">进入APP</a>
 				{if $role_type}
 				<a ng-href="{{links.post}}&acid={{list.acid}}&uniacid={{list.uniacid}}&account_type={{list.type}}" ng-show="list.role == 'manager' || list.role == 'owner' || list.role == 'founder'|| list.role == 'vice_founder'">管理设置</a>
 				{/if}
@@ -126,7 +126,7 @@
 	$(function(){
 		$('[data-toggle="tooltip"]').tooltip();
 	});
-	switch_url = "{php echo url('phoneapp/display/switch')}";
+	switch_url = "{php echo url('account/display/switch')}";
 	angular.module('accountApp').value('config', {
 		lists: {php echo !empty($list) ? json_encode($list) : 'null'},
 	links: {

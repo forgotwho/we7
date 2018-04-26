@@ -217,12 +217,10 @@ function uni_modules_by_uniacid($uniacid, $enabled = true) {
 	if (!empty($modules)) {
 		foreach ($modules as $name => $module) {
 			$module_info = module_fetch($name);
-			if ($module_info['welcome_support'] == MODULE_SUPPORT_SYSTEMWELCOME && $module_info['app_support'] != MODULE_SUPPORT_ACCOUNT && $module_info['wxapp_support'] != MODULE_SUPPORT_WXAPP && $module_info['webapp_support'] != MODULE_SUPPORT_WEBAPP && $module_info['phoneapp_support'] != MODULE_SUPPORT_PHONEAPP) {
-				continue;
-			}
-			if ($module_info['app_support'] != MODULE_SUPPORT_ACCOUNT && in_array($_W['account']['type'], array(ACCOUNT_TYPE_OFFCIAL_NORMAL, ACCOUNT_TYPE_OFFCIAL_AUTH)) ||
-				$module_info['webapp_support'] != MODULE_SUPPORT_WEBAPP && in_array($_W['account']['type'], array(ACCOUNT_TYPE_WEBAPP_NORMAL)) ||
-				$module_info['phoneapp_support'] != MODULE_SUPPORT_PHONEAPP && in_array($_W['account']['type'], array(ACCOUNT_TYPE_PHONEAPP_NORMAL))) {
+			if ($module_info['welcome_support'] != MODULE_SUPPORT_SYSTEMWELCOME &&
+				($module_info['app_support'] != MODULE_SUPPORT_ACCOUNT && in_array($_W['account']['type'], array(ACCOUNT_TYPE_OFFCIAL_NORMAL, ACCOUNT_TYPE_OFFCIAL_AUTH)) ||
+								$module_info['webapp_support'] != MODULE_SUPPORT_WEBAPP && in_array($_W['account']['type'], array(ACCOUNT_TYPE_WEBAPP_NORMAL)) ||
+				$module_info['phoneapp_support'] != MODULE_SUPPORT_PHONEAPP && in_array($_W['account']['type'], array(ACCOUNT_TYPE_PHONEAPP_NORMAL)))) {
 				continue;
 			}
 			if (!empty($module_info)) {
@@ -294,6 +292,7 @@ function uni_groups($groupids = array(), $show_all = false) {
 			if (in_array('-1', $groupids)) {
 				$list[-1] = array('id' => -1, 'name' => '所有服务', 'modules' => array('title' => '系统所有模块'), 'templates' => array('title' => '系统所有模板'));
 			}
+
 			if (in_array('0', $groupids)) {
 				$list[0] = array('id' => 0, 'name' => '基础服务', 'modules' => array('title' => '系统模块'), 'templates' => array('title' => '系统模板'));
 			}
@@ -715,8 +714,12 @@ function uni_account_save_switch($uniacid, $type = ACCOUNT_TYPE_SIGN) {
 	} else {
 		$cache_lastaccount[$type] = $uniacid;
 	}
+
 	visit_system_update(array('uniacid' => $uniacid, 'uid' => $_W['uid']));
 	cache_write($cache_key, $cache_lastaccount);
+
+	cache_write('we7:$cache_last_account_type', $type);
+
 	isetcookie('__uniacid', $uniacid, 7 * 86400);
 	isetcookie('__switch', $_GPC['__switch'], 7 * 86400);
 	return true;
@@ -1049,4 +1052,22 @@ function uni_search_link_account($module_name, $account_type) {
 		}
 	}
 	return $owned_account;
+}
+
+
+function uni_account_oauth_host() {
+	global $_W;
+	$oauth_url = $_W['siteroot'];
+	$unisetting = uni_setting_load();
+	if (!empty($unisetting['bind_domain']) && !empty($unisetting['bind_domain']['domain'])) {
+		$oauth_url = $unisetting['bind_domain']['domain'] . '/';
+	} else {
+		if (!empty($unisetting['oauth']['host'])) {
+			$oauth_url = $unisetting['oauth']['host'] . '/';
+		} else {
+			$global_unisetting = uni_account_global_oauth();
+			$oauth_url = !empty($global_unisetting['oauth']['host']) ? $global_unisetting['oauth']['host'] . '/' : $oauth_url;
+		}
+	}
+	return $oauth_url;
 }

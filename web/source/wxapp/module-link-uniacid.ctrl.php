@@ -36,6 +36,7 @@ if ($do == 'module_link_uniacid') {
 		$module_update = array();
 		$module_update[$module['name']] = array('name' => $module['name'], 'version' => $module['version'], 'uniacid' => $uniacid);
 		pdo_update('wxapp_versions', array('modules' => serialize($module_update)), array('id' => $version_id));
+		cache_delete(cache_system_key("wxapp_version:{$version_id}"));
 		iajax(0, '关联公众号成功');
 	}
 	if (!empty($version_info['modules'])) {
@@ -66,6 +67,7 @@ if ($do == 'module_unlink_uniacid') {
 	$version_modules = serialize($version_modules);
 	$result = pdo_update('wxapp_versions', array('modules' => $version_modules), array('id' => $version_info['id']));
 	if ($result) {
+		cache_delete(cache_system_key("wxapp_version:{$version_id}"));
 		iajax(0, '删除成功！', referer());
 	} else {
 		iajax(0, '删除失败！', referer());
