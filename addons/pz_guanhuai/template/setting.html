@@ -1,0 +1,202 @@
+{template 'common/header'}
+
+<style>
+    .current-keyword {
+        color: #428bca;
+        margin: 0 20px;
+    }
+
+    input.time {
+        width: 70px;
+    }
+
+    #myTabs {
+        height: 380px;
+    }
+
+    #global-form {
+        height: 480px;
+    }
+
+    #ruleconfig .col-sm-2 {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .label {
+        margin: 0 3px;
+        display: inline-block;
+    }
+
+    #time1 .label {
+
+    }
+
+    .we7-form .form-group, form .form-group {
+        margin-bottom: 10px;
+    }
+
+    .tab-pane h3 {
+        margin-top: 0px;
+    }
+
+    #ruleconfig .nav-tabs {
+        border-right: 1px solid #ddd;
+        border-bottom: 0px;
+    }
+
+    #ruleconfig .nav-tabs > li {
+        float: initial;
+        margin-right: -3px;
+    }
+
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+        background-color: #d9edf7;
+    }
+
+    #ruleconfig .nav-tabs > li.active > a, #ruleconfig .nav-tabs > li.active > a:hover, #ruleconfig .nav-tabs > li.active > a:focus {
+        border-right-color: transparent;
+        border-bottom-color: #ddd;
+    }
+
+    #ruleconfig .nav-tabs > li > a {
+        border-radius: 4px 0 0 4px;
+    }
+
+</style>
+
+
+<div class=" clearfix">
+    <ul id="bigTabs" class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#ruleconfig" id="ruleconfig-tab" role="tab"
+                                                  data-name="ruleconfig" data-toggle="tab" aria-controls="ruleconfig"
+                                                  aria-expanded="true"><h4>打招呼规则配置</h4></a></li>
+        <li role="presentation" style="float:right;"><a href="#help" id="help-tab" role="tab" data-name="help"
+                                                        data-toggle="tab" aria-controls="help" aria-expanded="true"><h4>
+            <kbd>使用小贴士</kbd></h4></a></li>
+    </ul>
+</div>
+<div class="tab-content">
+    <div id="ruleconfig" role="tabpanel" class="tab-pane fade in active" aria-labelledby="ruleconfig-tab">
+        <div class="col-sm-2">
+            <ul id="myTabs" class="nav nav-tabs nav-stacked" role="tablist">
+                <li role="presentation" class="active"><a href="#text" id="text-tab" role="tab" data-name="text" data-toggle="tab"
+                                           aria-controls="text" aria-expanded="true">文本模式</a></li>
+            </ul>
+        </div>
+
+        <div id="myTabContent" class="col-sm-10 tab-content">
+            <div id="text" role="tabpanel" class="tab-pane fade active in" aria-labelledby="text-tab">
+                <div class="panel we7-panel">
+                    <div class="panel-body we7-padding">
+                        <textarea style="height:300px;width:100%;" name="" id="text-content"
+                                  placeholder="这里填写内容 " class="form-control"
+                                  cols="60"></textarea>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-sm-12 text-center">
+            <a href="javascript:save_config()" class="btn btn-info">保存修改</a>
+        </div>
+    </div>
+
+    <div id="help" role="tabpanel" class="tab-pane fade " aria-labelledby="help-tab">
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">插件使用说明 </h3>
+            </div>
+            <div class="panel-body " id="intro-body">
+                <p>
+                    <i class="fa fa-info-circle"></i> 一旦设置成功 ，用户进入公众号时就会触发 该规则对应的回复内容。<br/>
+                </p>
+            </div>
+        </div>
+
+
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h3 class="panel-title">[Q&A] 第一次使用，如何配置？</h3>
+            </div>
+            <div class="panel-body">
+                <strong>请严格按照如下说明操作。</strong><br/>
+                1. 进入微信公众号官方后台 mp.weixin.qq.com <br/>
+                2. 点击官方后台首页左下角的" <kbd>接口权限</kbd> "，在右侧权限列表里 找到" <kbd>获取用户地理位置</kbd> ",点击"开启"之后，选择" <kbd>用户进行对话时上报一次</kbd> "之后保存。<br/>
+                3. 回到本系统公众号首页，点击左上角的" <kbd>自动回复</kbd> " ，然后点击右侧 " <kbd>非文字回复</kbd> " ，点击下方 " <kbd>上报地理位置</kbd> " 这个按钮对应的" <kbd>编辑</kbd> "，<kbd>启用</kbd> 并设置 <kbd>触发模块</kbd> ，选择本模块，并提交保存即可。
+            </div>
+
+            <div class="panel-heading">
+                <h3 class="panel-title">[Q&A] 为什么后台设置好内容，用户却收不到？</h3>
+            </div>
+            <div class="panel-body">
+                1. 请在手机上打开公众号的介绍页面，确认是否已经开启了"<kbd>提供位置信息</kbd>" 选项<br/>
+                2. 用户可能超过48小时没有和公众号进行过互动。互动的行为包括：<code>用户发送信息</code>、<code>点击自定义菜单（仅有点击推事件、扫码推事件、扫码推事件且弹出“消息接收中”提示框这3种菜单类型是会触发客服接口的）</code>、 <code>关注公众号</code>、 <code>扫描二维码</code>、 <code>支付成功</code>、 <code>用户维权</code>等<br/>
+                3. 微信限制，当公众号主动向用户推送20条内容之后，用户一直没有反馈（点击菜单，回复文字、图片、声音），如一直没有 通过微信向公众号发送文字回复，微信将暂停推送功能，只需要用户回复任意文字即可。
+            </div>
+
+        </div>
+    </div>
+
+</div>
+    <script>
+        var config = {$setting};
+        var active_item = {};
+        console.log(config);
+
+        $(function () {
+            $("#text-content").html(config.text.html);
+
+            //初始化当前激活的方式
+            $("a[data-name=" + config.active + "]").parent().addClass("active");
+            $("#" + config.active).addClass("active in");
+
+            $("#mute_for_last").val(config.mute_for_last);
+
+
+            $("#myTabs li.active").find("a").append('<span style="font-size: 12px;color:#428bca;"> 【激活】 </span>');
+
+            $('#myTabs a').click(function (e) {
+                e.preventDefault();
+                config.active = $(this).data("name");
+                $("#myTabs a span").remove();
+                $(this).append('<span style="font-size: 12px;color:#428bca;"> 【激活】 </span>');
+                $(this).tab('show');
+            });
+
+            $("#bigTabs a").click(function (e) {
+                e.preventDefault();
+                $(this).tab('show');
+
+            });
+
+
+
+        });
+
+
+        function save_config() {
+            config.mute_for_last = $("#mute_for_last").val();
+            config.text.html = $("#text-content").val();
+
+            console.log(config);
+
+            $.ajax({
+                url: window.location.href,
+                method: "post",
+                data: {setting: JSON.stringify(config)},
+                success: function (data) {
+                    window.location.reload();
+                },
+                error: function (data) {
+                    alert("保存失败，请联系作者。");
+                }
+            });
+        }
+    </script>
+
+    {template 'common/footer'}
+
