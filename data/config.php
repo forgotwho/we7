@@ -7,7 +7,7 @@ $config['db']['master']['host'] = '127.0.0.1';
 $config['db']['master']['username'] = 'we7user';
 $config['db']['master']['password'] = 'We7user@1234';
 $config['db']['master']['port'] = '3306';
-$config['db']['master']['database'] = 'we7_db';
+$config['db']['master']['database'] = 'we7_old';
 $config['db']['master']['charset'] = 'utf8';
 $config['db']['master']['pconnect'] = 0;
 $config['db']['master']['tablepre'] = 'ims_';
@@ -26,7 +26,7 @@ $config['db']['slave']['1']['weight'] = 0;
 $config['db']['common']['slave_except_table'] = array('core_sessions');
 
 // --------------------------  CONFIG COOKIE  --------------------------- //
-$config['cookie']['pre'] = '5fc4_';
+$config['cookie']['pre'] = 'c4c8_';
 $config['cookie']['domain'] = '';
 $config['cookie']['path'] = '/';
 
@@ -36,7 +36,7 @@ $config['setting']['cache'] = 'mysql';
 $config['setting']['timezone'] = 'Asia/Shanghai';
 $config['setting']['memory_limit'] = '256M';
 $config['setting']['filemode'] = 0644;
-$config['setting']['authkey'] = '2e324048';
+$config['setting']['authkey'] = '7d03a11a';
 $config['setting']['founder'] = '1';
 $config['setting']['development'] = 0;
 $config['setting']['referrer'] = 0;
