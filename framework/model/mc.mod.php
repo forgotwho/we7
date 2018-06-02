@@ -223,7 +223,7 @@ function mc_oauth_userinfo($acid = 0) {
 	global $_W;
 	if (isset($_SESSION['userinfo'])) {
 		$userinfo = unserialize(base64_decode($_SESSION['userinfo']));
-		if (!empty($userinfo['subscribe']) || !empty($userinfo['nickname'])) {
+		if (!empty($userinfo) || is_array($userinfo)) {
 			return $userinfo;
 		}
 	}

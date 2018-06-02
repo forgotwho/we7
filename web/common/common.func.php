@@ -527,7 +527,7 @@ function buildframes($framename = ''){
 	}
 	foreach ($frames as $menuid => $menu) {
 		
-			if (!empty($menu['founder']) && empty($_W['isfounder']) || user_is_vice_founder() && in_array($menuid, array('site', 'advertisement', 'appmarket')) || $_W['role'] == ACCOUNT_MANAGE_NAME_CLERK && in_array($menuid, array('account', 'wxapp', 'system')) || !$menu['is_display']) {
+			if (!empty($menu['founder']) && empty($_W['isfounder']) || user_is_vice_founder() && in_array($menuid, array('site', 'advertisement', 'appmarket')) || $_W['role'] == ACCOUNT_MANAGE_NAME_CLERK && in_array($menuid, array('account', 'wxapp', 'system', 'platform')) || !$menu['is_display']) {
 				continue;
 			}
 		
@@ -538,6 +538,7 @@ function buildframes($framename = ''){
 			'url' => $menu['url'],
 			'blank' => $menu['blank'],
 			'icon' => $menu['icon'],
+			'is_display' => $menu['is_display'],
 		);
 	}
 	return !empty($framename) ? ($framename == 'system_welcome' ? $frames['account'] : $frames[$framename]) : $frames;

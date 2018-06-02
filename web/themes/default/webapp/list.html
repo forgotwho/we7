@@ -46,11 +46,6 @@
 					<!--<a href="javascript:;" class="stick" ng-click="stick(detail.uniacid)" title="置顶">-->
 						<!--<i class="wi wi-stick-sign"></i>-->
 					<!--</a>-->
-					{if !permission_check_account_user('see_user_profile_account_num')}
-					<a href="{php echo url('home/welcome/add_welcome', array('uniacid' => $item['uniacid']))}" onclick="return ajaxopen(this.href);" class="home-show" title="添加到首页常用功能">
-						<i class="wi wi-eye"></i>
-					</a>
-					{/if}
 				</div>
 			</div>
 			{/loop}

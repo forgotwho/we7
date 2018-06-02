@@ -713,7 +713,7 @@ function tpl_frame() {
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>安装系统 - 微擎 - 公众平台自助开源引擎</title>
-		<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.2.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.2.0/css/bootstrap.min.css">
 		<style>
 			html,body{font-size:13px;font-family:"Microsoft YaHei UI", "微软雅黑", "宋体";}
 			.pager li.previous a{margin-right:10px;}
@@ -723,8 +723,8 @@ function tpl_frame() {
 			.footer a,.footer{color:#eee;font-size:14px;line-height:25px;}
 		</style>
 		<!--[if lt IE 9]>
-		  <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-		  <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+		  <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		  <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
 		<![endif]-->
 	</head>
 	<body style="background-color:#28b0e4;">
@@ -771,8 +771,8 @@ function tpl_frame() {
 				</div>
 			</div>
 		</div>
-		<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
-		<script src="http://cdn.bootcss.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+		<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+		<script src="//cdn.bootcss.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 	</body>
 </html>
 EOF;

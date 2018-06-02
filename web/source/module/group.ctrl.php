@@ -45,40 +45,57 @@ if ($do == 'save') {
 
 if ($do == 'display') {
 	$_W['page']['title'] = '应用套餐列表';
-	$param = array('uniacid' => 0);
-	$modules = user_modules($_W['uid']);
+	$pageindex = max(1, intval($_GPC['page']));
+	$pagesize = 10;
 
-	$modules_group_list = uni_groups();
+	$condition = 'WHERE uniacid = 0';
+	$params = array();
+	$name = safe_gpc_string($_GPC['name']);
+	if (!empty($name)) {
+		$condition .= " AND name LIKE :name";
+		$params[':name'] = "%{$name}%";
+	}
+	
+	$modules_group_list = pdo_fetchall("SELECT * FROM " . tablename('uni_group') . $condition . " LIMIT " . ($pageindex - 1) * $pagesize . "," . $pagesize, $params);
+	$total = pdo_fetchcolumn("SELECT COUNT(*) FROM " . tablename('uni_group') . $condition, $params);
+	$pager = pagination($total, $pageindex, $pagesize);
 	if (!empty($modules_group_list)) {
-		foreach ($modules_group_list as $group_key => &$group) {
-			if (!empty($_GPC['name']) && !strexists($group['name'], $_GPC['name'])) {
-				unset($modules_group_list[$group_key]);
-				continue;
-			}
-			if (empty($group['modules'])) {
-				$group['modules'] = array();
-			}
-			if (!empty($group['wxapp'])) {
-				$wxapp = $group['wxapp'];
-				if (is_array($wxapp) && !empty($wxapp)) {
-					if (!empty($group['wxapp'])) {
-						foreach ($group['wxapp'] as &$wxapp) {
-							if (file_exists(IA_ROOT.'/addons/'.$wxapp['name'].'/icon-custom.jpg')) {
-								$wxapp['logo'] = tomedia(IA_ROOT.'/addons/'.$wxapp['name'].'/icon-custom.jpg');
-							} else {
-								$wxapp['logo'] = tomedia(IA_ROOT.'/addons/'.$wxapp['name'].'/icon.jpg');
-							}
-						}
-						unset($wxapp);
+		foreach ($modules_group_list as $key => $value) {
+			$modules = (array)iunserializer($value['modules']);
+			if (!empty($modules)) {
+				foreach ($modules as $module_name) {
+					$module_info = module_fetch($module_name);
+					if (empty($module_info)) {
+						continue;
 					}
-				} else {
-					$group['wxapp'] = array();
+					if ($module_info['account_support'] == MODULE_SUPPORT_ACCOUNT || $module_info['app_support'] == MODULE_SUPPORT_ACCOUNT) {
+						$modules_group_list[$key]['account_num'] = intval($modules_group_list[$key]['account_num']) > 0 ? (intval($modules_group_list[$key]['account_num']) + 1) : 1;
+						$modules_group_list[$key]['account_modules'][] = $module_info;
+					}
+					if ($module_info['wxapp_support'] == MODULE_SUPPORT_WXAPP) {
+						$modules_group_list[$key]['wxapp_num'] = intval($modules_group_list[$key]['wxapp_num']) > 0 ? (intval($modules_group_list[$key]['wxapp_num']) + 1) : 1;
+						$modules_group_list[$key]['wxapp_modules'][] = $module_info;
+					}
+					if ($module_info['phoneapp_support'] == MODULE_NOSUPPORT_PHONEAPP) {
+						$modules_group_list[$key]['phoneapp_num'] = intval($modules_group_list[$key]['phoneapp_num']) > 0 ? (intval($modules_group_list[$key]['phoneapp_num']) + 1) : 1;
+						$modules_group_list[$key]['phoneapp_modules'][] = $module_info;
+					}
+					if ($module_info['webapp_support'] == MODULE_NOSUPPORT_WEBAPP) {
+						$modules_group_list[$key]['webapp_num'] = intval($modules_group_list[$key]['webapp_num']) > 0 ? (intval($modules_group_list[$key]['webapp_num']) + 1) : 1;
+						$modules_group_list[$key]['webapp_modules'][] = $module_info;
+					}
 				}
 			}
-			$group['templates'] = !empty($group['templates']) ? $group['templates'] : array();
+
+			$templates = (array)iunserializer($value['templates']);
+
+			$modules_group_list[$key]['template_num'] = !empty($templates) ? count($templates) : 0;
+			$modules_group_list[$key]['templates'] = pdo_getall('site_templates', array('id' => $templates), array('id', 'name', 'title'), 'name');
 		}
-		unset($group);
+
 	}
+
+		$modules = user_modules($_W['uid']);
 }
 
 if ($do == 'delete') {

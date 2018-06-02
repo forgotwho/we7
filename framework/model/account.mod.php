@@ -285,6 +285,7 @@ function uni_groups($groupids = array(), $show_all = false) {
 	global $_W;
 	$cachekey = cache_system_key(CACHE_KEY_UNI_GROUP);
 	$list = cache_load($cachekey);
+
 	if (empty($list)) {
 		$condition = ' WHERE uniacid = 0';
 		$list = pdo_fetchall("SELECT * FROM " . tablename('uni_group') . $condition . " ORDER BY id DESC", array(), 'id');
@@ -292,47 +293,41 @@ function uni_groups($groupids = array(), $show_all = false) {
 			if (in_array('-1', $groupids)) {
 				$list[-1] = array('id' => -1, 'name' => '所有服务', 'modules' => array('title' => '系统所有模块'), 'templates' => array('title' => '系统所有模板'));
 			}
-
 			if (in_array('0', $groupids)) {
 				$list[0] = array('id' => 0, 'name' => '基础服务', 'modules' => array('title' => '系统模块'), 'templates' => array('title' => '系统模板'));
 			}
 		}
+
 		if (!empty($list)) {
-			foreach ($list as $k=>&$row) {
-				$row['wxapp'] = array();
+			foreach ($list as $k => &$row) {
 				if (!empty($row['modules'])) {
-					$modules = iunserializer($row['modules']);
-					if (is_array($modules)) {
-						$module_list = pdo_getall('modules', array('name' => $modules), array(), 'name');
-						$row['modules'] = array();
-						if (!empty($module_list)) {
-							foreach ($module_list as $key => &$module) {
-								$module = module_fetch($key);
-								if ($module['wxapp_support'] == MODULE_SUPPORT_WXAPP) {
-									$row['wxapp'][$module['name']] = $module;
-								}
-
-								if ($module['webapp_support'] == MODULE_SUPPORT_WEBAPP) {
-									$row['webapp'][$module['name']] = $module;
-								}
-
-								if ($module['phoneapp_support'] == MODULE_SUPPORT_PHONEAPP) {
-									$row['phoneapp'][$module['name']] = $module;
-								}
-
-								if ($module['app_support'] == MODULE_SUPPORT_ACCOUNT) {
-									if (!empty($module['main_module'])) {
-										continue;
-									}
-									$row['modules'][$module['name']] = $module;
-									if (!empty($module['plugin'])) {
-										$group_have_plugin = array_intersect($module['plugin_list'], array_keys($module_list));
-										if (!empty($group_have_plugin)) {
-											foreach ($group_have_plugin as $plugin) {
-												$row['modules'][$plugin] = module_fetch($plugin);
-											}
-										}
-									}
+					$modules = (array)iunserializer($row['modules']);
+					$row['modules'] = $row['wxapp'] = $row['webapp'] = $row['phoneapp'] = array();
+					if (empty($modules)) {
+						continue;
+					}
+					foreach ($modules as $modulename) {
+						$module = module_fetch($modulename);
+						if (empty($module)) {
+							continue;
+						}
+						if ($module['wxapp_support'] == MODULE_SUPPORT_WXAPP) {
+							$row['wxapp'][] = $modulename;
+						}
+						if ($module['webapp_support'] == MODULE_SUPPORT_WEBAPP) {
+							$row['webapp'][] = $modulename;
+						}
+						if ($module['phoneapp_support'] == MODULE_SUPPORT_PHONEAPP) {
+							$row['phoneapp'][] = $modulename;
+						}
+						if ($module['app_support'] == MODULE_SUPPORT_ACCOUNT) {
+							if (!empty($module['main_module'])) {
+								continue;
+							}
+							$row['modules'][] = $modulename;
+							if (!empty($module['plugin_list'])) {
+								foreach ($module['plugin_list'] as $plugin) {
+									$row['modules'][] = $plugin;
 								}
 							}
 						}
@@ -340,9 +335,9 @@ function uni_groups($groupids = array(), $show_all = false) {
 				}
 
 				if (!empty($row['templates'])) {
-					$templates = iunserializer($row['templates']);
-					if (is_array($templates)) {
-						$row['templates'] = pdo_getall('site_templates', array('id' => $templates), array('id', 'name', 'title'), 'name');
+					$row['templates'] = (array)iunserializer($row['templates']);
+					if (!empty($row['templates'])) {
+						$row['templates'] = pdo_getall('site_templates', array('id' => $row['templates']), array('id', 'name', 'title'), 'name');
 					}
 				}
 			}
@@ -364,6 +359,22 @@ function uni_groups($groupids = array(), $show_all = false) {
 			}
 		}
 		$group_list = $list;
+	}
+
+	$module_section = array('modules', 'phoneapp', 'wxapp', 'webapp');
+	if (!empty($group_list)) {
+		foreach ($group_list as $id => $group) {
+			foreach ($module_section as $section) {
+				if (!empty($group_list[$id][$section])) {
+					$modules = $group_list[$id][$section];
+					$group_list[$id][$section] = array();
+
+					foreach ($modules as $modulename) {
+						$group_list[$id][$section][$modulename] = module_fetch($modulename);
+					}
+				}
+			}
+		}
 	}
 	return $group_list;
 }

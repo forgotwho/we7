@@ -201,6 +201,7 @@ if ($do == 'platform') {
 }
 
 if ($do == 'system_home') {
+	define('FRAME', '');
 	$user_info = user_single($_W['uid']);
 	$account_num = permission_user_account_num();
 

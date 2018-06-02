@@ -418,7 +418,7 @@ class WeEngine {
 					'message' => json_encode($this->message),
 				);
 				$response = ihttp_request(wurl('utility/subscribe/receive'), $params, array(), 10);
-				if (is_error($response) && $response['errno'] == '7') {
+				if (is_error($response) || $response['code'] != 200) {
 					$response = ihttp_request($_W['siteroot'] . 'web/' . wurl('utility/subscribe/receive'), $params, array(), 10);
 				}
 			}

@@ -62,7 +62,7 @@
 			</td>
 			<td class="text-right">
 				<div class="link-group">
-					<a href="./index.php?c=wxapp&a=display&do=switch&uniacid={{version.uniacid}}&version_id={{version.id}}">进入</a>
+					<a href="./index.php?c=account&a=display&do=switch&uniacid={{version.uniacid}}&version_id={{version.id}}">进入</a>
 					<a href="javascript:;" ng-click="showEditVersionInfoModal(version)" ng-show="version.type!=2">修改</a>
 					<a ng-show="version.type == 2" href="./index.php?c=wxapp&a=post&do=post&design_method={{version.design_method}}&uniacid={{version.uniacid}}&version_id={{version.id}}&create_type={{version.type}}" >修改</a>
 					<a href="javascript:;" class="del" ng-click="delWxappVersion(version.id)">删除</a>

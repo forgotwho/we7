@@ -315,7 +315,7 @@
 							{else}
 							<i class="wi wi-wx-circle pull-right color-green" style="font-size: 20px;"></i>
 							{/if}
-							<span class="appimg-title">{php echo ($server == 'local'? $video['filename'] : $video['tag']['title'])}</span>
+							<span class="appimg-title">{$video['filename']}</span>
 						</div>
 						<div class="img-thumb" style="background-image:url('{php echo tomedia($video['attachment'])}')">
 

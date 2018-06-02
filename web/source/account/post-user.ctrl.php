@@ -64,6 +64,7 @@ if ($do == 'edit') {
 		}
 		$result = pdo_delete('uni_account_users', $data);
 		if ($result) {
+			pdo_delete('system_stat_visit', $data);
 			itoast('删除成功！', referer(), 'success');
 		} else {
 			itoast('删除失败，请重试！', referer(), 'error');
@@ -218,9 +219,9 @@ if ($do == 'edit') {
 				pdo_delete('users_permission', array('uniacid' => $uniacid, 'uid' => $uid, 'type' => PERMISSION_WXAPP));
 			}
 		}
-				
-						pdo_query("DELETE FROM " . tablename('users_permission') . " WHERE uniacid = :uniacid AND uid = :uid AND type != '" . PERMISSION_ACCOUNT . "' AND type != '" . PERMISSION_WXAPP . "'", array(':uniacid' => $uniacid, ':uid' => $uid));
 		
+						pdo_query("DELETE FROM " . tablename('users_permission') . " WHERE uniacid = :uniacid AND uid = :uid AND type != '" . PERMISSION_ACCOUNT . "' AND type != '" . PERMISSION_WXAPP . "'", array(':uniacid' => $uniacid, ':uid' => $uid));
+
 		if (!empty($_GPC['module'])) {
 			foreach($_GPC['module'] as $module_val) {
 				$insert = array(

@@ -48,6 +48,6 @@ if ($do == 'display') {
 		}
 		setting_save($_W['setting']['thirdlogin'], 'thirdlogin');
 	}
-	$url = parse_url($_W['siteroot']);
+	$siteroot_parse_array = parse_url($_W['siteroot']);
 }
 template('system/thirdlogin');

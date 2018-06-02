@@ -208,7 +208,7 @@ function payment_proxy_pay_account() {
 	global $_W;
 	$setting = uni_setting($_W['uniacid'], array('payment'));
 	$setting['payment']['wechat']['switch'] = intval($setting['payment']['wechat']['switch']);
-	
+
 	if ($setting['payment']['wechat']['switch'] == PAYMENT_WECHAT_TYPE_SERVICE) {
 		$uniacid = intval($setting['payment']['wechat']['service']);
 	} elseif ($setting['payment']['wechat']['switch'] == PAYMENT_WECHAT_TYPE_BORROW) {
@@ -238,7 +238,7 @@ function payment_types($type = '') {
 	return !empty($pay_types[$type]) ? $pay_types[$type] : $pay_types;
 }
 function payment_setting() {
-	global $_W;	
+	global $_W;
 	$setting = uni_setting_load('payment', $_W['uniacid']);
 	$pay_setting = is_array($setting['payment']) ? $setting['payment'] : array();
 	if (empty($pay_setting['delivery'])) {
@@ -327,9 +327,12 @@ function payment_setting() {
 	} elseif ($pay_setting['wechat']['switch'] == 2) {
 		unset($pay_setting['wechat']['mchid'], $pay_setting['wechat']['apikey'], $pay_setting['wechat']['partner'], $pay_setting['wechat']['key'], $pay_setting['wechat']['signkey'], $pay_setting['wechat']['sub_mch_id'], $pay_setting['wechat']['service']);
 	} elseif ($pay_setting['wechat']['switch'] == 3) {
-		unset($pay_setting['wechat']['mchid'], $pay_setting['wechat']['apikey'], $pay_setting['wechat']['partner'], $pay_setting['wechat']['key'], $pay_setting['wechat']['signkey'], $pay_setting['wechat']['borrow']);	
+		unset($pay_setting['wechat']['mchid'], $pay_setting['wechat']['apikey'], $pay_setting['wechat']['partner'], $pay_setting['wechat']['key'], $pay_setting['wechat']['signkey'], $pay_setting['wechat']['borrow']);
 	}
 	foreach ($pay_setting as $type => &$value) {
+		if (empty($value) || !is_array($value)) {
+			continue;
+		}
 		$value['has_config'] = true;
 		$value['recharge_set'] = true;
 		$value['support_set'] = true;

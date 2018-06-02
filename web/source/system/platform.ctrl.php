@@ -44,7 +44,7 @@ if(empty($_W['setting']['platform'])) {
 	);
 	setting_save($_W['setting']['platform'],'platform');
 }
-$url = parse_url($_W['siteroot']);
+$siteroot_parse_array = parse_url($_W['siteroot']);
 if (!function_exists('mcrypt_module_open')) {
 	itoast('抱歉，您的系统不支持加解密 mcrypt 模块，无法进行平台接入', '', '');
 }

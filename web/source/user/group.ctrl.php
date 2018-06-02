@@ -12,23 +12,31 @@ $do = !empty($_GPC['do']) ? $_GPC['do'] : 'display';
 
 if ($do == 'display') {
 	$_W['page']['title'] = '用户组列表 - 用户组 - 用户管理';
+
+	$pageindex = max(1, intval($_GPC['page']));
+	$pagesize = 10;
+
 	$condition = '' ;
 	$params = array();
-	if (!empty($_GPC['name'])) {
+	$name = safe_gpc_string($_GPC['name']);
+	if (!empty($name)) {
 		$condition .= "WHERE name LIKE :name";
-		$params[':name'] = "%{$_GPC['name']}%";
+		$params[':name'] = "%{$name}%";
 	}
 	
-	$lists = pdo_fetchall("SELECT * FROM " . tablename('users_group').$condition, $params);
+	$lists = pdo_fetchall("SELECT * FROM " . tablename('users_group') . $condition . " LIMIT " . ($pageindex - 1) * $pagesize . "," . $pagesize, $params);
 	$lists = user_group_format($lists);
+
+	$total = pdo_fetchcolumn("SELECT COUNT(*) FROM " . tablename('users_group') . $condition, $params);
+	$pager = pagination($total, $pageindex, $pagesize);
 	template('user/group-display');
 }
 
 if ($do == 'post') {
-	$id = is_array($_GPC['id']) ? 0 : intval($_GPC['id']);
+	$id = intval($_GPC['id']);
 	$_W['page']['title'] = $id ? '编辑用户组 - 用户组 - 用户管理' : '添加用户组 - 用户组 - 用户管理';
 	if (!empty($id)) {
-		$group_info = pdo_fetch("SELECT * FROM ".tablename('users_group') . " WHERE id = :id", array(':id' => $id));
+		$group_info = pdo_get('users_group', array('id' => $id));
 		$group_info['package'] = iunserializer($group_info['package']);
 		if (!empty($group_info['package']) && in_array(-1, $group_info['package'])) $group_info['check_all'] = true;
 	}

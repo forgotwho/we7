@@ -17,13 +17,14 @@
 				</style>
 				{php global $top_nav}
 				{php $nav_top_fold=array()}
-				{php $url=url('account/display')}
-				{php $nav_top_fold[] = array('name' => 'all', 'title'=>'全部', 'type' => 'all', 'url' => $url)}
 				{php $nav_top_tiled=array()}
+				{php $nav_custom=array()}
+				{php $platform_url=url('account/display')}
+				{php $nav_top_fold[] = array('name' => 'all', 'title'=>'全部', 'type' => 'all', 'url' => $platform_url)}
 				{loop $top_nav $nav}
 					{if in_array($nav['name'], array(ACCOUNT_TYPE_SIGN, WXAPP_TYPE_SIGN, WEBAPP_TYPE_SIGN, PHONEAPP_TYPE_SIGN))}
 						{php $nav_top_fold[]=$nav}
-					{elseif in_array($nav['name'], array('module', 'system', 'site'))}
+					{elseif in_array($nav['name'], array('platform', 'module', 'system', 'site'))}
 						{php $nav_top_tiled_system[]=$nav}
 					{elseif in_array($nav['name'], array('appmarket', 'store', 'help', 'advertisement'))}
 						{php $nav_top_tiled_other[]=$nav}
@@ -34,15 +35,12 @@
 					{/if}
 				{/loop}
 				<ul class="nav navbar-nav  navbar-left">
-					{if $_GPC['active'] == 'privileges' || in_array($_GPC['type'], array(ACCOUNT_TYPE_SIGN, WXAPP_TYPE_SIGN, WEBAPP_TYPE_SIGN, PHONEAPP_TYPE_SIGN, 'all'))}
-						{php $privileges_active = true}
-					{/if}
-					<li {if $privileges_active} class="active" {/if}><a href="{php echo url('account/display/platform', array('active' => 'privileges'))}">平台</a></li>
 					{loop $nav_top_tiled_system $nav}
 					<li {if FRAME == $nav['name'] && !defined('IN_MODULE')} class="active" {/if}>
 					<a href="{if empty($nav['url'])}{php echo url('home/welcome/' . $nav['name']);}{else}{$nav['url']}{/if}" {if !empty($nav['blank'])}target="_blank"{/if}>{$nav['title']}</a>
 					</li>
 					{/loop}
+
 					<ul class="other nav navbar-nav navbar-left">
 						{loop $nav_top_tiled_other $nav}
 						<li {if FRAME == $nav['name'] && !defined('IN_MODULE')} class="active" {/if}>
@@ -57,6 +55,7 @@
 					<li {if FRAME == $nav['name'] && !defined('IN_MODULE')} class="active"{/if}><a href="{if empty($nav['url'])}{php echo url('home/welcome/' . $nav['name']);}{else}{$nav['url']}{/if}" {if !empty($nav['blank'])}target="_blank"{/if}>{$nav['title']}</a></li>
 					{/loop}
 				</ul>
+
 				<ul class="nav navbar-nav navbar-right ">
 
 					{if !empty($nav_top_help)}
@@ -66,15 +65,10 @@
 						</a>
 					</li>
 					{/if}
-					{php $workorder_nav=$frames['section']['workorder']['menu']['system_workorder']}
-					{if empty($workorder_nav['url'])}
-						{php $frames_site = buildframes('site')}
-						{php $workorder_nav=$frames_site['section']['workorder']['menu']['system_workorder']}
-					{/if}
-					{if !empty($workorder_nav) && $_W['isfounder']}
+					{if permission_check_account_user('see_workorder')}
 					<li>
-						<a href="{if empty($workorder_nav['url'])}{php echo url('home/welcome/' . $workorder_nav['name']);}{else}{$workorder_nav['url']}{/if}" data-toggle="tooltip"  data-placement="bottom" title="工单">
-							<i class="{$workorder_nav['icon']} color-gray" ></i>
+						<a href="{php echo url('system/workorder/display')}" data-toggle="tooltip"  data-placement="bottom" title="工单">
+							<i class="wi wi-system-work color-gray" ></i>
 						</a>
 					</li>
 					{/if}
@@ -87,9 +81,14 @@
 								<a href="{url 'user/profile'}" target="_blank"><i class="wi wi-account color-gray"></i> 我的账号</a>
 							</li>
 							<li class="divider"></li>
-							{if permission_check_account_user('see_system_upgrade')}<li><a href="{url 'cloud/upgrade'}" target="_blank"><i class="wi wi-update color-gray"></i> 自动更新</a></li>{/if}
+
+							{if permission_check_account_user('see_system_upgrade')}
+							<li><a href="{url 'cloud/upgrade'}" target="_blank"><i class="wi wi-update color-gray"></i> 自动更新</a></li>
+							{/if}
+
 							<li><a href="{url 'system/updatecache'}" target="_blank"><i class="wi wi-cache color-gray"></i> 更新缓存</a></li>
 							<li class="divider"></li>
+
 							<li>
 								<a href="{url 'user/logout'}"><i class="fa fa-sign-out color-gray"></i> 退出系统</a>
 							</li>

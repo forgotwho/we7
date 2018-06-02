@@ -61,7 +61,7 @@
 <div id="main" ng-controller="DisplayCtrl" ng-cloak>
 <div class="we7-page-search we7-padding-bottom clearfix">
 	<div class="pull-right">
-		<button class="btn btn-primary we7-padding-horizontal add-group" data-toggle="popover">+添加分组</button>
+		<button class="btn btn-primary we7-padding-horizontal add-group" data-show="popover">+添加分组</button>
 	</div>
 	<form action="" method="post" class="form-inline" role="form">
 		<div class="form-group">
@@ -113,8 +113,8 @@
 		<div class="panel we7-panel">
 			<div class="panel-heading">
 				{if empty($tag)}全部{else}{$fans_tag[$tag]['name']}
-				<a href="javascript:;" class="color-default fans-group-edit we7-margin-left-sm edit-group" data-toggle='popover'>重命名</a>
-				<a href="javascript:;" class="color-default fans-group-del we7-margin-left-sm" data-toggle='popover'>删除</a>
+				<a href="javascript:;" class="color-default fans-group-edit we7-margin-left-sm edit-group" data-show='popover'>重命名</a>
+				<a href="javascript:;" class="color-default fans-group-del we7-margin-left-sm" data-show='popover'>删除</a>
 				{/if}
 				<div class="pull-right we7-form">
 						<input id='credit1' type="radio" name='1' {if $type == ''}checked='checked'{/if} onclick="changetype('')" />
@@ -153,7 +153,7 @@
 										$('.openid').prop('checked', check);
 									}
 								</script>
-								<a href="javascript:;" class="btn btn-primary test we7-margin-left-sm batch-group" data-toggle='popover' >打标签</a>
+								<a href="javascript:;" class="btn btn-primary test we7-margin-left-sm batch-group" data-show='popover' >打标签</a>
 								<a href="javascript:;" class="btn btn-default we7-margin-left-sm" ng-click="sync('check')">同步选中粉丝信息</a>
 								<a href="javascript:;" class="btn btn-default we7-margin-left-sm" ng-click="downloadFans()">同步全部粉丝信息</a>
 								<label>同步会员信息
@@ -188,7 +188,7 @@
 							</a> {if !empty($fan['member']['mobile'])}<i class="wi wi-iphone fans-tel"></i>{/if}</p>
 							{/if}
 							<div class="fans-tag-area">
-								<span class="tag-list get-fans-tag js-group" data-id="{$fan['fanid']}" data-toggle='popover'>
+								<span class="tag-list get-fans-tag js-group" data-id="{$fan['fanid']}" data-show='popover'>
 									{loop $fan['tag_show'] $k $tag_show}
 									{if $k == 0 && $tag_show == '无标签'}
 									无标签
@@ -297,8 +297,8 @@
 </div>
 
 <script>
-	$("[data-toggle='popover']").on('show.bs.popover', function () {
-		$("[aria-describedby]").popover('hide');
+	$("[data-show='popover']").on('show.bs.popover', function () {
+		$("[aria-describedby]").click();
 	});
 	$(function(){
 		var uid = '';
@@ -324,7 +324,7 @@
 		$(".put-group").popover({
 			placement : 'bottom',
 			html : true,
-			template : '<div class="popover we7-popover" role="tooltip" data-toggle="popover"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content" ></div></div>',
+			template : '<div class="popover we7-popover" role="tooltip" data-show="popover"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content" ></div></div>',
 			content : '' +
 			'<div class="we7-form">' +
 				'<div class="form-group row">'+
@@ -360,7 +360,7 @@
 		'</div>',
 		});
 		$('body').on('click', '.popover-hide', function(){
-			$("[data-toggle='popover']").popover('hide');
+			$("[data-show='popover']").popover('hide');
 		});
 	});
 	$('.get-fans-tag').click(function() {
@@ -377,7 +377,7 @@
 	 });
 
 	batchEditFansTag = function() {
-		$("[data-toggle='popover']").popover('hide');
+		$("[data-show='popover']").popover('hide');
 		openids = $('.openid');
 		openid = [];
 		for(k in openids) {
@@ -415,7 +415,7 @@
 	}
 
 	editFansTag = function() {
-		$("[data-toggle='popover']").popover('hide');
+		$("[data-show='popover']").popover('hide');
 		tags = $('[name="tagname"]:checked');
 		checktags = [];
 		for(k in tags) {
@@ -435,7 +435,7 @@
 	}
 
 	editTagName = function() {
-		$("[data-toggle='popover']").popover('hide');
+		$("[data-show='popover']").popover('hide');
 		tag = "{$fans_tag[$tag]['id']}";
 		tag_name = $('[name="edittag"]').val();
 		$.post("{php echo url('mc/fans/edit_tagname')}", {'tag' : tag, 'tag_name' : tag_name}, function(data) {
@@ -449,7 +449,7 @@
 	}
 
 	delTag = function() {
-		$("[data-toggle='popover']").popover('hide');
+		$("[data-show='popover']").popover('hide');
 		tag = "{$fans_tag[$tag]['id']}";
 		$.post("{php echo url('mc/fans/del_tag')}", {'tag' : tag}, function(data) {
 			data = $.parseJSON(data);
@@ -459,10 +459,10 @@
 				util.message(data.message.message, "", 'info');
 			}
 		});
-		$("[data-toggle='popover']").popover('hide');
+		$("[data-show='popover']").popover('hide');
 	};
 	addTag = function() {
-		$("[data-toggle='popover']").popover('hide');
+		$("[data-show='popover']").popover('hide');
 		tag = $('[name="addtag"]').val();
 		$.post("{php echo url('mc/fans/add_tag')}", {'tag' : tag}, function(data) {
 			data = $.parseJSON(data);

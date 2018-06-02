@@ -110,6 +110,9 @@ function cloud_request($url, $post = '', $extra = array(), $timeout = 60) {
 	if (!empty($_W['setting']['cloudip']['ip']) && empty($extra['ip'])) {
 		$extra['ip'] = $_W['setting']['cloudip']['ip'];
 	}
+	if (strexists($url, 's.we7.cc')) {
+		$extra = array();
+	}
 	$response = ihttp_request($url, $post, $extra, $timeout);
 	if (is_error($response)) {
 		setting_save(array(), 'cloudip');

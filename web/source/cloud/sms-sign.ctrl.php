@@ -12,7 +12,7 @@ $dos = array('display', 'save_sms_sign');
 $do = in_array($do, $dos) ? $do : 'display';
 
 $setting_sms_sign = setting_load('site_sms_sign');
-$setting_sms_sign = !empty($setting_sms_sign['site_sms_sign']) ? $setting_sms_sign['site_sms_sign'] : '';
+$setting_sms_sign = !empty($setting_sms_sign['site_sms_sign']) ? $setting_sms_sign['site_sms_sign'] : array();
 
 if ($do == 'display') {
 	$sms_info = setting_load('sms.info');

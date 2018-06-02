@@ -14,7 +14,7 @@ $_W['page']['title'] = '退款参数 - 公众号选项';
 
 if ($do == 'display') {
 	$setting = uni_setting_load('payment', $_W['uniacid']);
-	$setting = $setting['payment'];
+	$setting = (array)$setting['payment'];
 	if (empty($setting['wechat_refund'])) {
 		$setting['wechat_refund'] = array('switch' => 0, 'key' => '', 'cert' => '');
 	}
@@ -27,7 +27,7 @@ if ($do == 'save_setting') {
 	$type = $_GPC['type'];
 	$param = $_GPC['param'];
 	$setting = uni_setting_load('payment', $_W['uniacid']);
-	$pay_setting = $setting['payment'];
+	$pay_setting = (array)$setting['payment'];
 	if ($type == 'wechat_refund') {
 		if (empty($_FILES['cert']['tmp_name'])) {
 			if (empty($setting['payment']['wechat_refund']['cert']) && $param['switch'] == 1) {

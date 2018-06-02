@@ -19,7 +19,7 @@ function table($name) {
 	load()->classs('table');
 	load()->table($name);
 	$service = false;
-	
+
 	$class_name = "{$name}Table";
 	if (class_exists($class_name)) {
 		$service = new $class_name();
@@ -29,7 +29,7 @@ function table($name) {
 
 
 class Loader {
-	
+
 	private $cache = array();
 	private $singletonObject = array();
 	private $libraryMap = array(
@@ -46,6 +46,7 @@ class Loader {
 		'qiniu' => 'qiniu/autoload',
 		'cos' => 'cosv4.2/include',
 		'cosv3' => 'cos/include',
+		'sentry' => 'sentry/Raven/Autoloader',
 	);
 	private $loadTypeMap = array(
 		'func' => '/framework/function/%s.func.php',
@@ -79,7 +80,7 @@ class Loader {
 			return false;
 		}
 	}
-	
+
 	
 	function singleton($name) {
 		if (isset($this->singletonObject[$name])) {
@@ -88,7 +89,7 @@ class Loader {
 		$this->singletonObject[$name] = $this->object($name);
 		return $this->singletonObject[$name];
 	}
-	
+
 	
 	function object($name) {
 		$this->classs(strtolower($name));

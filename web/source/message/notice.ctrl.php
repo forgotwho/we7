@@ -31,7 +31,7 @@ if ($do == 'display') {
 	$message_id = intval($_GPC['message_id']);
 	message_notice_read($message_id);
 
-	$pindex = intval($_GPC['page'], 1);
+	$pindex = max(intval($_GPC['page']), 1);
 	$psize = 10;
 
 	$message_table = table('message');

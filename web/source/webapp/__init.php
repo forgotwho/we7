@@ -13,7 +13,7 @@ $account_api = WeAccount::create();
 
 if ($action != 'manage' && $do != 'switch') {
 	if (is_error($account_api)) {
-		message($account_api['message'], url('webapp/manage/list'));
+		message($account_api['message'], url('account/display'));
 	}
 	$check_manange = $account_api->checkIntoManage();
 	if (is_error($check_manange)) {

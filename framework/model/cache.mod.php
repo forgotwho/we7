@@ -202,12 +202,12 @@ function cache_build_frame_menu() {
 				$system_menu[$menu_name]['section'][$section_name]['menu'] = iarray_sort($system_menu[$menu_name]['section'][$section_name]['menu'], 'displayorder', 'desc');
 			}
 		}
-		$add_top_nav = pdo_getall('core_menu', array('group_name' => 'frame', 'is_system <>' => 1), array('title', 'url', 'permission_name', 'displayorder', 'icon'));
+		$add_top_nav = pdo_getall('core_menu', array('group_name' => 'frame', 'is_system <>' => 1), array('title', 'url', 'permission_name', 'displayorder', 'icon', 'is_display'));
 		if (!empty($add_top_nav)) {
 			foreach ($add_top_nav as $menu) {
 				$menu['url'] = strexists($menu['url'], 'http') ?  $menu['url'] : $_W['siteroot'] . $menu['url'];
 				$menu['blank'] = true;
-				$menu['is_display'] = true;
+				$menu['is_display'] = $menu['is_display'] == 0 ? false : true;
 				$system_menu[$menu['permission_name']] = $menu;
 			}
 		}

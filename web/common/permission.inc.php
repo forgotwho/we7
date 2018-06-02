@@ -419,22 +419,26 @@ $we7_file_permission = array(
 			'see_user_create_own_vice_founder',
 			'see_user_profile_edit_username',
 			'see_user_profile_account_num',
-			'see_user_add_welcome_account'
+			'see_user_add_welcome_account',
+			'see_workorder',
 		),
 		'vice_founder' => array(
 			'see_account_manage_users_adduser',
 			'see_module_manage_system_group_add',
-			'see_user_add_welcome_account'
+			'see_user_add_welcome_account',
 		),
 		'owner' => array(
 
 		),
 		'manager' => array(
-			'see_user_profile_welcome'
+			'see_user_profile_welcome',
 		),
 		'operator' => array(
-			'see_user_profile_welcome'
+			'see_user_profile_welcome',
 		),
+		'clerk' => array(
+
+		)
 	),
 );
 

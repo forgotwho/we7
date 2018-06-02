@@ -11,7 +11,7 @@ $dos = array('display', 'save_expire', 'change_status');
 $do = in_array($do, $dos) ? $do : 'display';
 
 $user_expire = setting_load('user_expire');
-$user_expire = !empty($user_expire['user_expire']) ? $user_expire['user_expire'] : '';
+$user_expire = !empty($user_expire['user_expire']) ? $user_expire['user_expire'] : array();
 
 if ($do == 'display') {
 	$user_expire['day'] = !empty($user_expire['day']) ? $user_expire['day'] : 1;

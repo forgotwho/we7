@@ -76,6 +76,9 @@
 		</td>
 	</tr>
 </table>
+<div class="pull-right">
+	{$pager}
+</div>
 <script>
 	angular.module('userGroup').value('config', {
 		lists: {php echo !empty($lists) ? json_encode($lists) : 'null'},

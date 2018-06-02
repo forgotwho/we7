@@ -22,7 +22,14 @@ if ($do == 'platform') {
 		} elseif ($cache_last_account_type == WXAPP_TYPE_SIGN) {
 			header('Location: ' . url('wxapp/display/home'));
 		} elseif ($cache_last_account_type == WEBAPP_TYPE_SIGN) {
-			header('Location: ' . url('webapp/home/display'));
+			$cache_key = cache_system_key(CACHE_KEY_ACCOUNT_SWITCH, $_GPC['__switch']);
+			$cache_lastaccount = cache_load($cache_key);
+			$webapp_info = table('account')->getUniAccountByUniacid($cache_lastaccount[WEBAPP_TYPE_SIGN]);
+			if (!empty($webapp_info)) {
+				header('Location: ' . url('webapp/home/display'));
+			} else {
+				header('Location: ' . url('account/display'));
+			}
 		} elseif ($cache_last_account_type == PHONEAPP_TYPE_SIGN) {
 			header('Location: ' . url('phoneapp/display/home'));
 		}
@@ -171,15 +178,19 @@ if ($do == 'switch') {
 		}
 
 		if ($type == ACCOUNT_TYPE_APP_NORMAL || $type == ACCOUNT_TYPE_APP_AUTH || $type == ACCOUNT_TYPE_PHONEAPP_NORMAL) {
-			if ($type == ACCOUNT_TYPE_APP_NORMAL || $type == ACCOUNT_TYPE_APP_AUTH) {
-				$info = wxapp_fetch($uniacid);
-			} elseif ($type == ACCOUNT_TYPE_PHONEAPP_NORMAL) {
-				$info = phoneapp_fetch($uniacid);
-			}
-
-			if (!empty($info)) {
+			if (!empty($account_info)) {
 				$module_name = safe_gpc_string($_GPC['module']);
-				$version_id = !empty($_GPC['version_id']) ? intval($_GPC['version_id']) : $info['version_id'];
+				if (!empty($_GPC['version_id'])) {
+					$version_id = intval($_GPC['version_id']);
+				} else {
+					$versions = wxapp_get_some_lastversions($uniacid);
+					foreach ($versions as $val) {
+						if ($val['current']) {
+							$version_id = $val['id'];
+						}
+					}
+				}
+
 				if (!empty($module_name) && !empty($version_id)) {
 					$version_info = wxapp_version($version_id);
 					$module_info = array();
@@ -214,11 +225,7 @@ if ($do == 'switch') {
 					uni_account_switch($uniacid, url('phoneapp/version/home', array('version_id' => $version_id)), PHONEAPP_TYPE_SIGN);
 				}
 			} else {
-				if ($type == ACCOUNT_TYPE_APP_NORMAL || $type == ACCOUNT_TYPE_APP_AUTH) {
-					itoast('小程序不存在', referer(), 'error');
-				} elseif ($type == ACCOUNT_TYPE_PHONEAPP_NORMAL) {
-					itoast('APP不存在', referer(), 'error');
-				}
+				itoast('账号不存在', referer(), 'error');
 			}
 		}
 	}

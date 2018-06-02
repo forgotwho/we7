@@ -141,6 +141,14 @@ class CoreModule extends WeModule {
 										}
 										unset($news_value);
 										break;
+									case 'video' :
+										foreach ($replies[$key] as &$video_value) {
+											$video_material = material_get($video_value['mediaid']);
+											$video_value['filename'] = $video_material['filename'];
+										}
+										unset($video_value);
+										break;
+										
 								}
 							}
 						}

@@ -57,7 +57,7 @@
 			<!--搜索、新建、管理-->
 			<div class="we7-page-search cut-header">
 
-				<div ng-if="searchShow">
+				<div ng-if="searchShow" ng-cloak>
 					<form action="./index.php" method="get">
 						<input type="hidden" name="c" value="account">
 						<input type="hidden" name="a" value="display">
@@ -86,7 +86,7 @@
 						{/if}
 
 						{if !empty($account_info['wxapp_limit']) || $_W['isfounder'] && !user_is_vice_founder()}
-						<a href="{php echo url('wxapp/post/design_method')}" class="color-default" ng-if="type == 'wxapp">
+						<a href="{php echo url('wxapp/post/design_method')}" class="color-default" ng-if="type == 'wxapp'">
 							<i class="wi wi-registersite"></i>新建小程序
 						</a>
 						{/if}
@@ -133,7 +133,7 @@
 
 			<!--首字母检索-->
 			<div class="clearfix"></div>
-			<ul class="letters-list" ng-if="searchShow">
+			<ul class="letters-list" ng-if="searchShow" ng-cloak>
 				<li ng-repeat="letter in alphabet" ng-style="{'background-color': letter == activeLetter ? '#ddd' : 'none'}" ng-class="{'active': letter == activeLetter}" ng-click="searchModule(letter)" class="ng-scope">
 					<a href="javascript:;" ng-bind="letter" class="ng-binding"></a>
 				</li>
@@ -229,7 +229,7 @@
 					</div>
 				</div>
 			</div>
-
+			<ul ng-if="!list" style="text-align:center;width:100%"><span ng-if="!list">暂无数据</span></ul>
 		</div>
 	</div>
 </div>
@@ -241,6 +241,7 @@
 		'title' : "{$title}",
 		'keyword' : "{$keyword}",
 		'letter' : "{$letter}",
+		'total' : '{$total}',
 		'links' : {
 		'rank' : "{php echo url('account/display/rank')}",
 			'switch' : "{php echo url('account/display/switch')}",
@@ -258,6 +259,7 @@
 	},
 	scrollUrl : "{php echo url('account/display', array('type'=>$type))}"
 	});
+
 	angular.bootstrap($('#js-account-display'), ['accountApp']);
 </script>
 

@@ -7,6 +7,13 @@ defined('IN_IA') or exit('Access Denied');
 
 $we7_system_menu = array();
 
+$we7_system_menu['platform'] = array(
+	'title' => '平台',
+	'icon' => 'wi wi-platform',
+	'url' => url('account/display/platform'),
+	'section' => array(),
+);
+
 $we7_system_menu['account'] = array(
 	'title' => '公众号',
 	'icon' => 'wi wi-white-collar',
@@ -672,8 +679,8 @@ $we7_system_menu['site'] = array(
 					'url' => url('system/workorder/display'),
 					'icon' => 'wi wi-system-work',
 					'permission_name' => 'system_workorder',
-				)
-			)
+				),
+			),
 		),
 		'backjob'=> array(
 			'title' => '后台任务',
@@ -687,6 +694,7 @@ $we7_system_menu['site'] = array(
 			)
 		)
 	),
+	'founder' => true,
 );
 
 

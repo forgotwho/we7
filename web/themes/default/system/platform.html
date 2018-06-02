@@ -107,14 +107,14 @@
 		<tr>
 			<td class="table-label">发起授权页的体验URL</td>
 			<td>
-				<span>{$url['host']}{$url['path']}web/index.php?c=account&a=auth&do=test</span>
+				<span>{$siteroot_parse_array['host']}{$siteroot_parse_array['path']}web/index.php?c=account&a=auth&do=test</span>
 			</td>
 			<td><div class="link-group"><a href="javascript:;" id="copy-1" clipboard supported="supported" text="url.host+url.path+'web/index.php?c=account&a=auth&do=test'" on-copied="success('1')">点击复制</a></div></td>
 		</tr>
 		<tr>
 			<td class="table-label">授权事件接受URL</td>
 			<td>
-				<span>{$url['host']}{$url['path']}web/index.php?c=account&a=auth&do=ticket</span>
+				<span>{$siteroot_parse_array['host']}{$siteroot_parse_array['path']}web/index.php?c=account&a=auth&do=ticket</span>
 			</td>
 			<td><div class="link-group"><a href="javascript:;" id="copy-2" clipboard supported="supported" text="url.host+url.path+'web/index.php?c=account&a=auth&do=ticket'" on-copied="success('2')">点击复制</a></div></td>
 		</tr>
@@ -151,7 +151,7 @@
 		<tr>
 			<td class="table-label">公众号消息与事件接受URL</td>
 			<td>
-				<input type="text" readonly value="{$url['host']}{$url['path']}api.php?appid=/$APPID$" class="form-control">
+				<input type="text" readonly value="{$siteroot_parse_array['host']}{$siteroot_parse_array['path']}api.php?appid=/$APPID$" class="form-control">
 			</td>
 			<td><div class="link-group"><a href="javascript:;" id="copy-5" clipboard supported="supported" text="url.host+url.path+'api.php?appid=/$APPID$'" on-copied="success('5')">点击复制</a></div></td>
 		</tr>
@@ -207,7 +207,7 @@
 <script type="text/javascript">
 	angular.module('accountApp').value('config', {
 		platform: {php echo !empty($_W['setting']['platform']) ? json_encode($_W['setting']['platform']) : 'null'},
-		url: {php echo !empty($url) ? json_encode($url) : 'null'},
+		url: {php echo !empty($siteroot_parse_array) ? json_encode($siteroot_parse_array) : 'null'},
 		links: {
 			platformPost: "{php echo url('system/platform')}",
 		},

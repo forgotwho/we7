@@ -155,6 +155,7 @@
 			{/if}
 		</table>
 		{if !permission_check_account_user('see_user_add_welcome_account')}
+		{if $_W['role'] != ACCOUNT_MANAGE_NAME_CLERK}
 		<table class="table we7-table table-hover table-form">
 			<col width="160px " />
 			<col />
@@ -178,6 +179,8 @@
 			</tr>
 		</table>
 		{/if}
+		{/if}
+
 		{if !permission_check_account_user('see_user_profile_account_num')}
 		<table class="table we7-table table-hover table-form">
 			<col />

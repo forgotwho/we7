@@ -192,9 +192,11 @@ function user_single($user_or_uid) {
 		$record['clerk_type'] = '2';
 	}
 	$third_info = pdo_getall('users_bind', array('uid' => $record['uid']), array(), 'third_type');
-	$record['qq_openid'] = $third_info[USER_REGISTER_TYPE_QQ]['bind_sign'];
-	$record['wechat_openid'] = $third_info[USER_REGISTER_TYPE_WECHAT]['bind_sign'];
-	$record['mobile'] = $third_info[USER_REGISTER_TYPE_MOBILE]['bind_sign'];
+	if (!empty($third_info) && is_array($third_info)) {
+		$record['qq_openid'] = $third_info[USER_REGISTER_TYPE_QQ]['bind_sign'];
+		$record['wechat_openid'] = $third_info[USER_REGISTER_TYPE_WECHAT]['bind_sign'];
+		$record['mobile'] = $third_info[USER_REGISTER_TYPE_MOBILE]['bind_sign'];
+	}
 	return $record;
 }
 
@@ -517,6 +519,9 @@ function user_login_forward($forward = '') {
 	if (user_is_vice_founder()) {
 		return url('account/manage', array('account_type' => 1));
 	}
+	if ($_W['user']['type'] == ACCOUNT_OPERATE_CLERK) {
+		return url('module/display');
+	}
 
 	$url = user_after_login_link();
 
@@ -609,7 +614,7 @@ function user_invite_register_url($uid = 0) {
 	if (empty($uid)) {
 		$uid = $_W['uid'];
 	}
-	return $_W['siteroot'] . 'index.php?c=user&a=register&owner_uid=' . $uid;
+	return $_W['siteroot'] . 'web/index.php?c=user&a=register&owner_uid=' . $uid;
 }
 
 

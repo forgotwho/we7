@@ -25,7 +25,7 @@ class WeiXinPay extends pay{
 			$this->wxpay = array(
 				'appid' => $_W['account']['key'],
 				'mch_id' => $wxpay['mchid'],
-				'key' => $wxpay['apikey'],
+				'key' => !empty($wxpay['apikey']) ? $wxpay['apikey'] : $wxpay['signkey'],
 				'notify_url' => $_W['siteroot'] . 'payment/wechat/notify.php',
 			);
 		}
